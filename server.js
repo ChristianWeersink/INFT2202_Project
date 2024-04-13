@@ -31,6 +31,17 @@ app.get ("/", (req, res)=> {
         res.render('index');
 });
 
+app.get ("/sign-in", (req, res)=> {
+        res.render('sign-in');
+});
+
+app.get ("/sign-up", (req, res)=> {
+        res.render('sign-up');
+});
+
+app.get ("/logout", (req, res)=> {
+        res.render('logout');
+});
 
 app.listen(port, ()=> { // listens 
         console.log(`Server running on port ${port}`);
