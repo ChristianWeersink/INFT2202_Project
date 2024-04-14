@@ -21,6 +21,10 @@ const taskSchema = mongoose.Schema({
     status: {
         type: String,
         default: "Not Started",
+    },
+    owner: {
+        type: String,
+        required: [true, "You need to be a user to create a task."]
     }
 },
     {

@@ -1,0 +1,54 @@
+<% const title="Tasks" ; %>
+<%- include('header', {title: title}) %>
+
+
+    <h1>
+        <%=title %>
+    </h1>
+    
+    <form action="/tasks" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea><br>
+        
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category"><br>
+        
+        <label for="label">Label:</label>
+        <input type="text" id="label" name="label"><br>
+        
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" name="dueDate"><br>
+        
+   
+        <input type="hidden" id="owner" name="owner" value="" readonly><br>
+        
+        <input type="submit" value="Create Task">
+    </form>
+
+    <div id="tasks-container">
+        <!-- Tasks will be dynamically added here -->
+    </div>
+    <script>
+        // Define getCookie function
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [cookieName, cookieValue] = cookie.trim().split('=');
+                if (cookieName === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+            return null; // Return null if cookie not found
+        }
+    
+        // Access userInfo and set the owner field
+        let userInfo = getCookie('user');
+        let userParsed = JSON.parse(userInfo);
+        document.getElementById('owner').value = userParsed._id;
+    </script>
+    
+
+<%- include('footer', {title: title}) %>

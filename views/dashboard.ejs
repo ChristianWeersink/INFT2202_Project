@@ -7,15 +7,14 @@
 <script>
     // Get the value of the "user" cookie
     let userInfo = getCookie('user');
-    let userBUTTS = JSON.parse(userInfo);
+    let userParsed = JSON.parse(userInfo);
 
     // Check if the userInfo cookie exists
     if (!userInfo) {
         // Redirect to login page if userInfo cookie is not found
         window.location.href = "./sign-in";
     } else {
-
-        $('#welcome_msg').html("Welcome: " + userBUTTS.username);
+        $('#welcome_msg').html("Welcome: " + userParsed.username);
     }
 </script>
 

@@ -16,7 +16,8 @@ const createTask = async (req, res) => {
             description,
             category,
             label,
-            dueDate
+            dueDate,
+            owner
         });
 
         // Save the new task to the database
