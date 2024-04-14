@@ -52,6 +52,7 @@ const registerUser = asyncHandler(async(req, res) =>{
 //@access public
 const loginUser = asyncHandler(async(req, res) =>{
     const {email, password} = req.body;
+    console.log(email +" "+ password);
     if(!email || !password) {
         res.status(400);
         throw new Error("All fields are mandatory!");
@@ -68,10 +69,13 @@ const loginUser = asyncHandler(async(req, res) =>{
             },
         }, process.env.ACCESS_TOKEN_SECRET,
         {expiresIn: "10m"}
+        
         );
+        console.log("log in succesful");
         res.status(200).json({accessToken});
     } else {
         res.status(401);
+        console.log("failed to log in");
         throw new Error("Unauthorized access. Email or Password is not valid");
     }
 }) ;

@@ -1,0 +1,17 @@
+<% const title = "Logout"; %>
+<%- include('header', {title: title}) %>
+
+<h1><%=title %></h1>
+
+
+<h1>Logging out...</h1>
+    <script>
+        // Delete the "loggedIn" cookie
+        document.cookie = "loggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        
+        // Redirect the user to the home page
+        window.location.href = "/";
+    </script>
+
+<%- include('footer') %>

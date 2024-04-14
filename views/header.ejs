@@ -1,17 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <%= title %> </title>
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scripts/cookieHandler.js"></script>
+
 </head>
+
 <body>
     <header>
         <nav>
-            <ul>
-                <li><a href = "/">Home</a></li>
-                <li><a href = "./sign-in">Sign in</a></li>
-                <li><a href = "./sign-up">Sign up</a></li>
+            <ul id="navLinks">
+                <li><a href="/">Home</a></li>
             </ul>
         </nav>
     </header>
+    <script>
+        // Check if the "loggedIn" cookie is present
+        const cookies = document.cookie.split(';');
+        let isLoggedIn = false;
+        for (let cookie of cookies) {
+            if (cookie.trim().startsWith('loggedIn=')) {
+                isLoggedIn = true;
+                break;
+            }
+        }
+
+        // Get the navigation links element
+        const navLinks = $('#navLinks');
+
+        // Update the navigation links based on the user's authentication state
+        if (isLoggedIn) {
+            // User is logged in, display sign-out link
+            navLinks.append('<li><a href="./logout">Sign out</a></li>');
+        } else {
+            // User is not logged in, display sign-in and sign-up links
+            navLinks.append('<li><a href="./sign-in">Sign in</a></li>');
+            navLinks.append('<li><a href="./sign-up">Sign up</a></li>');
+        }
+    </script>
+</body>
+
+</html>

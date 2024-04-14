@@ -1,5 +1,63 @@
-<% const title = "Sign In"; %>
-<%- include('header', {title: title}) %>
-<h1><%=title %></h1>
+<% const title="Sign In" ; %>
+    <%- include('header', {title: title}) %>
 
-<%- include('footer') %>
+        <h1>
+            <%=title %>
+        </h1>
+
+        <div>
+            <form id="sign-in">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <input type="submit">
+            </form>
+        </div>
+        <div id="message"></div>
+
+        <script>
+            document.getElementById("sign-in").addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                try {
+                    const response = await fetch("sign-in", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        console.log('log in successful ! ! ! ! !');
+                        setCookie('loggedIn', 'true', { expires: 1 / 24 });
+                        setCookie('user', JSON.stringify(data.user), { expires: 1 / 24 });
+
+                        // Log the cookies
+                        console.log('loggedIn cookie:', getCookie('loggedIn'));
+                        console.log('user cookie:', JSON.stringify(data.user));
+
+
+                        window.location.href = "/dashboard"; // Redirect to dashboard or another page
+                    } else {
+                        console.log('login failure :(');
+                        document.getElementById("message").textContent = "Login failed. Please try again.";
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    document.getElementById("message").textContent = "An error occurred.";
+                }
+            });
+        </script>
+
+        <%- include('footer') %>
