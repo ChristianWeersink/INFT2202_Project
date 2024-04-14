@@ -1,0 +1,55 @@
+/*
+    Final Project Stylesheet
+    April 13 2024
+    Christina Jackson and Christian Weersink
+    Stylesheet for INFT2202 Final Project
+*/
+
+body {
+    height: 100vh;
+	margin: 0 auto;
+    display: flex;
+	flex-direction: column;
+}
+
+.centertext {
+    text-align: center;
+}
+
+.spButton {
+    margin-left: -185px;
+}
+
+.Forms {
+    display: flex;
+    flex-direction: column;
+}
+
+.navigation {
+    height: 50px;
+    text-decoration: none;
+}
+
+.navigation ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	padding: 15px;
+}
+
+.navigation li {
+	display: block;
+	float: right;
+    margin-right: 10px;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	color: hotpink;
+	text-decoration: underline;
+}

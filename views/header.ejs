@@ -11,10 +11,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/cookieHandler.js"></script>
+    <link rel="stylesheet" type="text/css" href="../views/css/stylesheet.css">
 
 </head>
 
 <body>
+    <div class="navigation">
     <header>
         <nav>
             <ul id="navLinks">
@@ -39,13 +41,14 @@
         // Update the navigation links based on the user's authentication state
         if (isLoggedIn) {
             // User is logged in, display sign-out link
-            navLinks.append('<li><a href="./logout">Sign out</a></li>');
+            navLinks.append('<li><a href="./logout">Sign out</a></li>') ;
         } else {
             // User is not logged in, display sign-in and sign-up links
             navLinks.append('<li><a href="./sign-in">Sign in</a></li>');
             navLinks.append('<li><a href="./sign-up">Sign up</a></li>');
         }
     </script>
+    </div>
 </body>
 
 </html>

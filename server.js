@@ -13,6 +13,9 @@ connectDb();
 const app = express();
 const port = process.env.PORT;
 
+// Need to use .use for CSS to work
+app.use('/views', express.static('views'));
+
 app.use(cors());
 app.use(express.json());
 app.use(session({
