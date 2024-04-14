@@ -8,6 +8,7 @@ const passport = require('./middleware/authenticate'); // Import Passport config
 const User = require('./models/userModel');
 const Task = require('./models/tasksModel');
 const dotenv = require('dotenv').config();
+const {createTask} = require("./controllers/tasksController");
 
 connectDb();
 
@@ -35,6 +36,7 @@ app.set('view engine', 'ejs');
 app.use('/api/students', require('./routes/studentRoute'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+
 
 // Middleware
 app.use(errorHandler);
@@ -92,6 +94,21 @@ app.get('/tasks', async (req, res) => {
                 res.status(500).json({ message: error.message });
         }
 });
+
+app.post('/tasks', async (req, res) => {
+        try {
+            // Call the createTask function to create a new task
+            const createdTask = await createTask(req.body);
+    
+            console.log(createdTask);
+            // Send a success response with the created task object
+            res.status(201).json(createdTask);
+        } catch (error) {
+                console.log("error creating task");
+            // Handle errors
+            res.status(500).json({ message: error.message });
+        }
+    });
 
 app.listen(port, () => {
         console.log(`Server running on port ${port}`);

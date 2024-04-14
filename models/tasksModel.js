@@ -7,6 +7,7 @@ const taskSchema = mongoose.Schema({
     },
     description: {
         type: String,
+        default: "No description",
     },
     category: {
         type: String,
@@ -14,9 +15,11 @@ const taskSchema = mongoose.Schema({
     },
     label: {
         type: String,
+        default: "No label",
     },
     dueDate: {
         type: Date,
+        default: "",
     },
     status: {
         type: String,

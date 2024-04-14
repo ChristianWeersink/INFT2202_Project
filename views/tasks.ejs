@@ -6,7 +6,7 @@
         <%=title %>
     </h1>
     
-    <form action="/tasks" method="post">
+    <form id="taskForm" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br>
         
@@ -32,23 +32,45 @@
         <!-- Tasks will be dynamically added here -->
     </div>
     <script>
-        // Define getCookie function
-        function getCookie(name) {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                const [cookieName, cookieValue] = cookie.trim().split('=');
-                if (cookieName === name) {
-                    return decodeURIComponent(cookieValue);
-                }
-            }
-            return null; // Return null if cookie not found
-        }
-    
         // Access userInfo and set the owner field
         let userInfo = getCookie('user');
-        let userParsed = JSON.parse(userInfo);
-        document.getElementById('owner').value = userParsed._id;
+    let userParsed = JSON.parse(userInfo);
+    console.log(userParsed);
+    $('#owner').val(userParsed._id);
+
+    $('#taskForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Construct JSON object with form data
+        const jsonData = {
+            name: $('#name').val(),
+            description: $('#description').val(),
+            category: $('#category').val(),
+            label: $('#label').val(),
+            dueDate: $('#dueDate').val(),
+            owner: $('#owner').val()
+        };
+
+        // Optionally, you can log the JSON data to the console for verification
+        console.log(jsonData);
+
+        // Now you can send the JSON data to the server using AJAX
+        $.ajax({
+            type: 'POST',
+            url: '/tasks',
+            contentType: 'application/json',
+            data: JSON.stringify(jsonData),
+            success: function(data) {
+                console.log('Response:', data);
+                // Handle success response here
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                // Handle error here
+            }
+        });
+    });
     </script>
     
 
-<%- include('footer', {title: title}) %>
+<%- include('footer') %>

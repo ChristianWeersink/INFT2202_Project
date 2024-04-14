@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 // CREATE: Create a new task
 const createTask = async (req, res) => {
     try {
-        const { name, description, category, label, dueDate } = req.body;
+        const { name, description, category, label, dueDate, owner } = req.body;
 
         // Create a new task object based on the Task model
         const newTask = new Task({
@@ -19,6 +19,7 @@ const createTask = async (req, res) => {
             dueDate,
             owner
         });
+        console.log("create new task:\n" + newTask);
 
         // Save the new task to the database
         const savedTask = await newTask.save();
