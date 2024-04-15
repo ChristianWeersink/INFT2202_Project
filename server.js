@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
 const errorHandler = require('./middleware/errorHandler');
@@ -8,7 +9,7 @@ const passport = require('./middleware/authenticate'); // Import Passport config
 const User = require('./models/userModel');
 const Task = require('./models/tasksModel');
 const dotenv = require('dotenv').config();
-const {createTask} = require("./controllers/tasksController");
+const {createTask, getAllTasks} = require("./controllers/tasksController");
 
 connectDb();
 
@@ -26,6 +27,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(cookieParser());
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -54,12 +56,16 @@ app.get('/sign-in', (req, res) => {
 app.post("/sign-in", passport.authenticate('local'), (req, res) => {
         // If passport.authenticate('local') succeeds, this function will be called
         // This means the user has been authenticated successfully
-        console.log("sign in success, sending response");
+    
+        // Set user information in cookies
         const authenticatedUser = req.user;
-        console.log("authenticated user: " + authenticatedUser)
-        // You can customize the response data based on your requirements
+        res.cookie('user', JSON.stringify(authenticatedUser));
+        res.cookie('success', true);
+        res.cookie('loggedIn', true);
+    
+        // Respond with a success message or redirect to the dashboard
         res.status(200).json({ success: true, user: authenticatedUser });
-});
+    });
 
 // Dashboard route
 app.get('/dashboard', (req, res) => {
@@ -85,10 +91,7 @@ app.get('/logout', (req, res) => {
 app.get('/tasks', async (req, res) => {
         try {
                 // Retrieve all tasks from the database
-                const tasks = await Task.find();
-
-                // Render the tasks page and pass the tasks array as data
-                res.render('tasks', { tasks });
+                await getAllTasks(req, res);
         } catch (error) {
                 // Handle errors
                 res.status(500).json({ message: error.message });
@@ -98,13 +101,9 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks', async (req, res) => {
         try {
             // Call the createTask function to create a new task
-            const createdTask = await createTask(req.body);
-    
-            console.log(createdTask);
-            // Send a success response with the created task object
-            res.status(201).json(createdTask);
+            await createTask(req, res);
         } catch (error) {
-                console.log("error creating task");
+            console.log("error creating task");
             // Handle errors
             res.status(500).json({ message: error.message });
         }

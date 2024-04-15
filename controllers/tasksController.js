@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 // @desc Get all students
 // @route GET /api/students
 const Task = require("../models/tasksModel"); //mongoose student structure or something
+const User = require("../models/userModel")
 const mongoose = require('mongoose');
 
 
@@ -9,42 +10,41 @@ const mongoose = require('mongoose');
 const createTask = async (req, res) => {
     try {
         const { name, description, category, label, dueDate, owner } = req.body;
-
-        // Create a new task object based on the Task model
-        const newTask = new Task({
-            name,
-            description,
-            category,
-            label,
-            dueDate,
-            owner
-        });
-        console.log("create new task:\n" + newTask);
-
-        // Save the new task to the database
+        const newTask = new Task({ name, description, category, label, dueDate, owner });
         const savedTask = await newTask.save();
-
-        // Send a success response with the saved task object
         res.status(201).json(savedTask);
     } catch (error) {
-        // Handle errors
         res.status(500).json({ message: error.message });
     }
 };
 
-// READ: Get all tasks
+
+// READ: Get all tasks with pagination
 const getAllTasks = async (req, res) => {
     try {
-        // Retrieve all tasks from the database
-        const tasks = await Task.find();
+        // Retrieve the user ID from cookies
+        const userCookie = JSON.parse(req.cookies.user);
+        const userId = userCookie._id;
 
-        // Send a success response with the tasks array
-        res.status(200).json(tasks);
+        // Pagination parameters
+        const page = parseInt(req.query.page) || 1; // Default page is 1
+        const pageSize = 10; // Number of tasks per page
+
+        // Calculate skip value
+        const skip = (page - 1) * pageSize;
+
+        // Retrieve tasks belonging to the user with pagination
+        const tasks = await Task.find({ owner: userId }).skip(skip).limit(pageSize);
+
+        // Render the tasks page with the tasks array and pagination info
+        res.render('tasks', { title: "Tasks", tasks, currentPage: page });
+
     } catch (error) {
         // Handle errors
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // READ: Get a single task by ID
 const getTaskById = async (req, res) => {

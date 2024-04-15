@@ -1,76 +1,111 @@
 <% const title="Tasks" ; %>
-<%- include('header', {title: title}) %>
+    <%- include('header', {title: title}) %>
+
+        <h1>
+            <%= title %>
+        </h1>
+
+        <form id="taskForm" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea><br>
+
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category"><br>
+
+            <label for="label">Label:</label>
+            <input type="text" id="label" name="label"><br>
+
+            <label for="dueDate">Due Date:</label>
+            <input type="date" id="dueDate" name="dueDate"><br>
+
+            <input type="hidden" id="owner" name="owner" value="" readonly><br>
+
+            <input type="submit" value="Create Task">
+        </form>
+        <div id="messages"></div>
+
+        <!-- Display tasks -->
+        <div id="tasks-container">
+            <% tasks.forEach(task=> { %>
+                <div class="task-item">
+                    <h3>
+                        <%= task.name %>
+                    </h3>
+                    <p>Description: <%= task.description %>
+                    </p>
+                </div>
+                <% }); %>
+        </div>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <% if (currentPage> 1) { %>
+                <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
+                <% } %>
+                    <span>Page <%= currentPage %></span>
+                    <% if (tasks.length===10) { %>
+                        <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
+                        <% } %>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            // Access userInfo and set the owner field
+            let userInfo = getCookie('user');
+            let userParsed = JSON.parse(userInfo);
+
+            $('#owner').val(userParsed._id);
 
 
-    <h1>
-        <%=title %>
-    </h1>
-    
-    <form id="taskForm" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        
-        <label for="description">Description:</label>
-        <textarea id="description" name="description"></textarea><br>
-        
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category"><br>
-        
-        <label for="label">Label:</label>
-        <input type="text" id="label" name="label"><br>
-        
-        <label for="dueDate">Due Date:</label>
-        <input type="date" id="dueDate" name="dueDate"><br>
-        
-   
-        <input type="hidden" id="owner" name="owner" value="" readonly><br>
-        
-        <input type="submit" value="Create Task">
-    </form>
+            $('#taskForm').submit(function (event) {
+                event.preventDefault(); // Prevent default form submission
 
-    <div id="tasks-container">
-        <!-- Tasks will be dynamically added here -->
-    </div>
-    <script>
-        // Access userInfo and set the owner field
-        let userInfo = getCookie('user');
-    let userParsed = JSON.parse(userInfo);
-    console.log(userParsed);
-    $('#owner').val(userParsed._id);
+                // Construct JSON object with form data
+                const jsonData = {
+                    name: $('#name').val(),
+                    description: $('#description').val(),
+                    category: $('#category').val(),
+                    label: $('#label').val(),
+                    dueDate: $('#dueDate').val(),
+                    owner: $('#owner').val()
+                };
 
-    $('#taskForm').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
+                // Send JSON data to the server using AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/tasks',
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function (task) {
+                        // Append the new task to the tasks container
+                        const taskContainer = $('#tasks-container');
+                        taskContainer.append(`
+                        <div class="task-item">
+                            <h3>${task.name}</h3>
+                            <p>Description: ${task.description}</p>
+                            <!-- Add more task details as needed -->
+                        </div>`);
 
-        // Construct JSON object with form data
-        const jsonData = {
-            name: $('#name').val(),
-            description: $('#description').val(),
-            category: $('#category').val(),
-            label: $('#label').val(),
-            dueDate: $('#dueDate').val(),
-            owner: $('#owner').val()
-        };
+                        // Clear the form input fields
+                        $('#name').val('');
+                        $('#description').val('');
+                        $('#category').val('');
+                        $('#label').val('');
+                        $('#dueDate').val('');
 
-        // Optionally, you can log the JSON data to the console for verification
-        console.log(jsonData);
+                        // Display success message
+                        $('#messages').text('Task created successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        // Handle error here
+                        $("#messages").text("Error: ", error);
+                    }
+                });
+            });
+        </script>
 
-        // Now you can send the JSON data to the server using AJAX
-        $.ajax({
-            type: 'POST',
-            url: '/tasks',
-            contentType: 'application/json',
-            data: JSON.stringify(jsonData),
-            success: function(data) {
-                console.log('Response:', data);
-                // Handle success response here
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                // Handle error here
-            }
-        });
-    });
-    </script>
-    
-
-<%- include('footer') %>
+        <%- include('footer') %>
