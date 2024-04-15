@@ -6,10 +6,12 @@
 */
 
 body {
-    height: 100vh;
+    min-height: 100vh;
 	margin: 0 auto;
+    padding: 0;
     display: flex;
 	flex-direction: column;
+    background-color: #EAEBED;
 }
 
 .centertext {
@@ -23,6 +25,10 @@ body {
 .Forms {
     display: flex;
     flex-direction: column;
+}
+
+.bold {
+    font-weight: bolder;
 }
 
 .navigation {
@@ -47,9 +53,29 @@ body {
 a {
 	text-decoration: none;
 	font-weight: bold;
+    color: #2E2327;
+    text-shadow: 0.25px 0.25px 0 white;
 }
 
 a:hover {
-	color: hotpink;
-	text-decoration: underline;
+	color: #183E4E;
+	
+}
+
+a:hover .underline {
+    text-decoration: underline;
+}
+
+.error {
+    color: #561017;
+    text-shadow: 0.25px 0.25px 0 white;
+}
+
+#footer {
+    margin-top: auto;
+	padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

@@ -109,6 +109,25 @@ app.post('/tasks', async (req, res) => {
         }
     });
 
+
+// Footer routes
+
+// About Us route
+app.get('/aboutus', (req, res) => {
+        res.render('aboutus');
+});
+
+// Cookie Policy route
+app.get('/cookies', (req, res) => {
+        res.render('cookies');
+});
+
+// Privacy Policy route
+app.get('/privacy', (req, res) => {
+        res.render('privacy');
+});
+
+
 app.listen(port, () => {
         console.log(`Server running on port ${port}`);
 });

@@ -20,7 +20,7 @@
     <header>
         <nav>
             <ul id="navLinks">
-                <li><a href="/">Home</a></li>
+                <li><a href="/">| &nbsp; <span class="underline">Home</span></a></li>
             </ul>
         </nav>
     </header>
@@ -39,12 +39,12 @@
         // Update the navigation links based on the user's authentication state
         if (isLoggedIn) {
             // User is logged in, display sign-out link
-            navLinks.append('<li><a href="./logout">Sign out</a></li>');
-            navLinks.append('<li><a href="./tasks">Tasks</a></li>');
+            navLinks.append('<li><a href="./logout">| &nbsp; <span class="underline">Sign out</span></a></li>');
+            navLinks.append('<li><a href="./tasks"><span class="underline">Tasks</span></a></li>');
         } else {
             // User is not logged in, display sign-in and sign-up links
-            navLinks.append('<li><a href="./sign-in">Sign in</a></li>');
-            navLinks.append('<li><a href="./sign-up">Sign up</a></li>');
+            navLinks.append('<li><a href="./sign-in">| &nbsp; <span class="underline">Sign in</span></a></li>');
+            navLinks.append('<li><a href="./sign-up"><span class="underline">Sign up</span></a></li>');
             
         }
     </script>
