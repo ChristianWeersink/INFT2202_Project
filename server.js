@@ -10,6 +10,7 @@ const User = require('./models/userModel');
 const Task = require('./models/tasksModel');
 const dotenv = require('dotenv').config();
 const {createTask, getAllTasks} = require("./controllers/tasksController");
+const {registerUser} = require("./controllers/userController");
 
 connectDb();
 
@@ -78,9 +79,16 @@ app.use('/scripts', (req, res, next) => {
         next();
 }, express.static(path.join(__dirname, 'views/scripts')));
 
+
 app.get('/sign-up', (req, res) => {
         res.render('sign-up');
 });
+
+app.post('/sign-up', (req, res) => {
+        registerUser(req, res);
+})
+
+
 
 // Corrected 'res.render()' statement for logout route
 app.get('/logout', (req, res) => {
