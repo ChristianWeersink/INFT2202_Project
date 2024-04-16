@@ -3,17 +3,58 @@
 
 <div class="centertext">
 <h1>Task Helper: The Place for Productivity</h1>
-<!-- <div id="carouselImage">
+
+<div id="carouselImage">
 
     <div class="Images">
-        <img src="" alt="">
+        <img src="/images/image1.png" alt="Student studying with textbook">
     </div>
 
-</div> -->
+    <div class="Images">
+        <img src="/images/image2.jpg" alt="Filing cabinet with papers inside">
+    </div>
+
+    <div class="Images">
+        <img src="/images/image3.jpg" alt="Checking tasks off on a paper list">
+    </div>
+
+    <div class="Images">
+        <img src="/images/image4.jpg" alt="Clipboard clip art">
+    </div>
+
+</div>
+
+<script>
+
+    const carouselDiv = document.getElementById("carouselImage");
+    const carouselImages = carouselDiv.querySelectorAll(".Images");
+    let index = 0;
+
+    function thePictures(index) {
+        carouselImages.forEach((image, i) => {
+            if (i === index) {
+                image.style.display = "block";
+            }
+            else {
+                image.style.display = "none";
+            }
+        });
+    }
+
+    thePictures(index);
+
+    function nextPic(){
+        index = (index + 1) % carouselImages.length;
+        thePictures(index);
+    }
+
+    setInterval(nextPic, 3000);
+
+</script>
 
 
 
-<br>
+<br><br><br>
 <h2> <a href="./sign-in" target="_blank"> <span class="underline"> Sign In Here </span> </a> </h2>
 
 </div>

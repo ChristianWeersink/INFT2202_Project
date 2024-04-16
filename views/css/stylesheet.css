@@ -7,11 +7,12 @@
 
 body {
     min-height: 100vh;
-	margin: 0 auto;
+	margin: 0;
     padding: 0;
     display: flex;
 	flex-direction: column;
     background-color: #EAEBED;
+    flex: 1;
 }
 
 .centertext {
@@ -64,6 +65,24 @@ a:hover {
 
 a:hover .underline {
     text-decoration: underline;
+}
+
+.Images {
+    opacity: 1;
+    overflow: hidden;
+    height: 300px
+}
+
+.Images img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+}
+
+
+
+#carouselImage {
+    height: 300px;
 }
 
 .error {
