@@ -17,37 +17,24 @@
         
             <label for="su_password">Choose a Password:</label>
             <input type="password" id="su_password" name="su_password" required>
+            <br><br>
+
+            <label for="su_confirm_password">Confirm Password:</label>
+            <input type="password" id="su_confirm_password" name="su_confirm_password" required>
+
             <br>
-            
             <button type="button" id="showPassword" class="spButton">Show Password</button>
         
         <br><br>
         <input type="submit" value="Sign Up">
-    </form></div>
+        
+    </form>
+    <p id="message" class="error"></p>
+</div>
 
 
 
-<script>
-    // If the content is loaded properly, functions below will work
-    document.addEventListener("DOMContentLoaded", function() {
-        const newPassword = document.getElementById("su_password");
-        const showThePass = document.getElementById("showPassword");
-
-        // On click, change the input type and text on button
-        showThePass.addEventListener("click", function() {
-            if (newPassword.type === "password") {
-                newPassword.type = "text";
-                showThePass.textContent = "Hide Password";
-            } else {
-                newPassword.type = "password";
-                showThePass.textContent = "Show Password";
-            }
-        });
-    });
-
-
-
-</script>
+<script src="./scripts/sign-up.js"></script>
 
 
 
