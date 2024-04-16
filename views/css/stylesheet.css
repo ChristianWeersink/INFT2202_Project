@@ -89,6 +89,20 @@ a:hover .underline {
     color: #561017;
     text-shadow: 0.25px 0.25px 0 white;
 }
+.task-item {
+    border: #183E4E 1px solid;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 5px;
+    width: 400px;
+}
+
+.pagination {
+    z-index: 1000;
+}
+
+
+
 
 #footer {
     margin-top: auto;
@@ -97,4 +111,5 @@ a:hover .underline {
     position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: 50;
 }

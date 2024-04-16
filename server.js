@@ -87,7 +87,14 @@ app.get('/sign-up', (req, res) => {
 });
 
 app.post('/sign-up', (req, res) => {
-        registerUser(req, res);
+        try{
+                registerUser(req, res);
+        }
+        catch (error){
+                console.log(error);
+                res.status(500).json({message: error.message});
+        }
+        
 })
 
 

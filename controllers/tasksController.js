@@ -9,8 +9,8 @@ const mongoose = require('mongoose');
 // CREATE: Create a new task
 const createTask = async (req, res) => {
     try {
-        const { name, description, category, label, dueDate, owner } = req.body;
-        const newTask = new Task({ name, description, category, label, dueDate, owner });
+        const { name, description, category, label, dueDate, owner, priority } = req.body;
+        const newTask = new Task({ name, description, category, label, dueDate, owner, priority });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
     } catch (error) {
@@ -28,7 +28,7 @@ const getAllTasks = async (req, res) => {
 
         // Pagination parameters
         const page = parseInt(req.query.page) || 1; // Default page is 1
-        const pageSize = 10; // Number of tasks per page
+        const pageSize = 5; // Number of tasks per page
 
         // Calculate skip value
         const skip = (page - 1) * pageSize;

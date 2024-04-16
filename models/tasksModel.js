@@ -28,6 +28,16 @@ const taskSchema = mongoose.Schema({
     owner: {
         type: String,
         required: [true, "You need to be a user to create a task."]
+    },
+    priority: {
+        type: Number,
+        default: 0,
+        validate: {
+            validator: function(value) {
+                return value >= 0 && value <= 3;
+            },
+            message: "Priority must be a number between 0 and 3."
+        }
     }
 },
     {

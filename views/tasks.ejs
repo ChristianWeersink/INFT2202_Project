@@ -21,6 +21,9 @@
             <label for="dueDate">Due Date:</label>
             <input type="date" id="dueDate" name="dueDate"><br>
 
+            <label for="priority">Priority Level: </label>
+            <input type="number" id="priority" min="0" max="3" value="0">
+
             <input type="hidden" id="owner" name="owner" value="" readonly><br>
 
             <input type="submit" value="Create Task">
@@ -36,6 +39,16 @@
                     </h3>
                     <p>Description: <%= task.description %>
                     </p>
+                    <p>Category: <%= task.category %>
+                    </p>
+                    <p>Label: <%= task.label %>
+                    </p>
+                    <p>Due Date: <%= task.dueDate %>
+                    </p>
+                    <p>Priority: <%= task.priority %>
+                    </p>
+                    <button id="<%=task._id %>" class="deleteButton">Delete</button>
+                    <button class="updateButton" id="<%= task._id %>">Update</button>
                 </div>
                 <% }); %>
         </div>
@@ -46,7 +59,7 @@
                 <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
                 <% } %>
                     <span>Page <%= currentPage %></span>
-                    <% if (tasks.length===10) { %>
+                    <% if (tasks.length===5) { %>
                         <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
                         <% } %>
         </div>
@@ -70,8 +83,10 @@
                     category: $('#category').val(),
                     label: $('#label').val(),
                     dueDate: $('#dueDate').val(),
-                    owner: $('#owner').val()
+                    owner: $('#owner').val(),
+                    priority: $('#priority').val()
                 };
+                console.log(jsonData);
 
                 // Send JSON data to the server using AJAX
                 $.ajax({
@@ -86,7 +101,12 @@
                         <div class="task-item">
                             <h3>${task.name}</h3>
                             <p>Description: ${task.description}</p>
-                            <!-- Add more task details as needed -->
+                            <p>Category: ${task.category}</p>
+                            <p>Label: ${task.label}</p>
+                            <p>Due Date: ${task.dueDate}</p>
+                            <p>Priority: ${task.priority}</p>
+                            <button id ="${task._id}" class="deleteButton">Delete</button>
+                            <button class="updateButton" id="${task._id}">Update</button>
                         </div>`);
 
                         // Clear the form input fields
@@ -95,9 +115,11 @@
                         $('#category').val('');
                         $('#label').val('');
                         $('#dueDate').val('');
+                        $('#priority').val(0);
+
 
                         // Display success message
-                        $('#messages').text('Task created successfully');
+                        $('#messages').text('Task created successfully!');
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
