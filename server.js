@@ -59,7 +59,7 @@ app.get('/sign-in', (req, res) => {
 app.post("/sign-in", passport.authenticate('local'), (req, res) => {
         // If passport.authenticate('local') succeeds, this function will be called
         // This means the user has been authenticated successfully
-    
+        
         // Set user information in cookies
         const authenticatedUser = req.user;
         res.cookie('user', JSON.stringify(authenticatedUser));

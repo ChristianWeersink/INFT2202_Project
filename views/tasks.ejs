@@ -37,7 +37,7 @@
 
                 <input type="submit" value="Create Task">
             </form>
-            <div id="messages"></div>
+            <div id="messages"> </div>
 
             <!-- Display tasks -->
             <div id="tasks-container">
@@ -58,7 +58,7 @@
                         </p>
                         <p class="task-status">Status: <%= task.status %>
                         </p>
-                        <button class="deleteButton">Delete</button>
+                        <button id="<%=task._id %>" class="deleteButton">Delete</button>
                         <button class="updateButton">Update</button>
                         <form class="updateForm" style="display: none;">
                             <label for="updateName">Name:</label>
@@ -96,7 +96,7 @@
                     <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
                     <% } %>
                         <span>Page <%= currentPage %></span>
-                        <% if (tasks.length===5) { %>
+                        <% if (tasks.length >= 5) { %>
                             <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
                             <% } %>
             </div>
@@ -132,58 +132,32 @@
                     url: '/tasks',
                     contentType: 'application/json',
                     data: JSON.stringify(jsonData),
-                    success: async function (savedTask) {
+                    success: async function (response) {
                         try {
-                            $.ajax({
-                                type: 'GET',
-                                url: '/tasks',
-                                contentType: 'application/json',
-                                success: async function (result) {
-                                    console.log(result.tasks);
+                            updateTasks();
 
-                                    // Replace the existing tasks in the DOM with the updated list
-                                    $('#tasks-container').html('');
-                                    result.tasks.forEach(task => {
-                                        $('#tasks-container').append(`
-                    <div class="task-item">
-                        <h3>${task.name}</h3>
-                        <p>Description: ${task.description}</p>
-                        <p>Category: ${task.category}</p>
-                        <p>Label: ${task.label}</p>
-                        <p>Due Date: ${task.dueDate}</p>
-                        <p>Priority: ${task.priority}</p>
-                        <button id="${task._id}" class="deleteButton">Delete</button>
-                        <button class="updateButton" id="${task._id}">Update</button>
-                    </div>
-                `);
-                                    });
+                            // Clear the form input fields
+                            $('#name').val('');
+                            $('#description').val('');
+                            $('#category').val('');
+                            $('#label').val('');
+                            $('#dueDate').val('');
+                            $('#priority').val(0);
 
-                                    // Clear the form input fields
-                                    $('#name').val('');
-                                    $('#description').val('');
-                                    $('#category').val('');
-                                    $('#label').val('');
-                                    $('#dueDate').val('');
-                                    $('#priority').val(0);
-
-                                    // Display success message
-                                    $('#messages').text('Task created successfully!');
-                                }
-                            });
-
-
+                            // Display success message
+                            $('#messages').text('Task created successfully!').addClass('success');
 
 
                         } catch (error) {
                             console.error('Error:', error);
                             // Handle error here
-                            $("#messages").text("Error: ", error);
+                            $("#messages").text("Error: an error occurred when creating a task.").addClass('error');
                         }
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
                         // Handle error here
-                        $("#messages").text("Error: ", error);
+                        $("#messages").text("Error: ", error).addClass('error');
                     }
                 });
 
@@ -266,7 +240,7 @@
                         error: function (xhr, status, error) {
                             console.error('Error:', error);
                             // Handle error here
-                            $("#messages").text("Error: " + error);
+                            $("#messages").text("Error: " + error).addClass('error');
                         }
                     });
                 });
@@ -292,8 +266,11 @@
 
                 // Delete button click event
                 $('#tasks-container').on('click', '.deleteButton', function () {
-                    const taskItem = $(this).closest('.task-item');
-                    const taskId = taskItem.attr('id');
+                    const taskId = $(this).attr('id');
+                    const taskItem = $(this).closest('.task-item'); // Retrieve taskItem here
+                    
+                    console.log(taskId);
+                    console.log(taskItem);
 
                     // If not in editing mode, delete the task
                     if (!taskItem.hasClass('editing')) {
@@ -302,15 +279,14 @@
                             url: '/tasks/' + taskId,
                             success: function (response) {
                                 // Remove the task item from the DOM
-                                taskItem.remove();
-                                // Optionally, you can display a success message or perform any other actions
+                                updateTasks();
                                 console.log('Task deleted successfully');
-                                $('#messages').text("Task deleted successfully!");
+                                $('#messages').text("Task deleted successfully!").addClass('success');
                             },
                             error: function (xhr, status, error) {
                                 console.error('Error:', error);
                                 // Handle error here
-                                $("#messages").text("Error: " + error);
+                                $("#messages").text("Error: " + error).addClass('error');
                             }
                         });
                     } else {
@@ -326,6 +302,50 @@
                     }
                 });
             });
+
+            function updateTasks() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/tasks',
+                    contentType: 'application/json',
+                    success: async function (result) {
+                        console.log(result.tasks);
+
+                        // Replace the existing tasks in the DOM with the updated list
+                        $('#tasks-container').html('');
+                        result.tasks.forEach(task => {
+                            $('#tasks-container').append(`
+                    <div class="task-item">
+                        <h3>${task.name}</h3>
+                        <p>Description: ${task.description}</p>
+                        <p>Category: ${task.category}</p>
+                        <p>Label: ${task.label}</p>
+                        <p>Due Date: ${task.dueDate}</p>
+                        <p>Priority: ${task.priority}</p>
+                        <p>Status: ${task.status}</p>
+                        <button id="${task._id}" class="deleteButton">Delete</button>
+                        <button class="updateButton" id="${task._id}">Update</button>
+                    </div>
+                `);
+                        });
+
+                        $('.pagination').html('');
+                        if (result.currentPage > 1) {
+                            $('.pagination').append(`<a href="/tasks?page=${result.currentPage - 1}">Previous </a>`);
+                        }
+                        $('.pagination').append(`<span>Page ${result.currentPage}</span>`);
+                        if (result.tasks.length >= 5) {
+                            $('.pagination').append(`<a href="/tasks?page=${result.currentPage + 1}"> Next</a>`);
+                            console.log (result.currentPage);
+                        }
+                    }
+                });
+            }
+
+
+
+
+
         </script>
 
 

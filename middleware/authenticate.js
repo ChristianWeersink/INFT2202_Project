@@ -17,7 +17,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
         console.log('user found and password correct');
         return done(null, user);
     } catch (error) {
-        console.log('authenticate error');
+        console.log(error);
         return done(error);
     }
 }));

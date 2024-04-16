@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 // CREATE: Create a new task
 const createTask = async (req, res) => {
     try {
-        var { name, description, category, label, dueDate, owner, priority } = req.body;
+        var { name, description, category, label, dueDate, owner, priority, status } = req.body;
         // Check for empty null values 
         if (!description) {
             description = "No Description";
@@ -21,9 +21,9 @@ const createTask = async (req, res) => {
             label = "No label";
         }
         if(!dueDate){
-            dueDate = 'No date';
+            dueDate = '2024-12-24';
         }
-        const newTask = new Task({ name, description, category, label, dueDate, owner, priority });
+        const newTask = new Task({ name, description, category, label, dueDate, owner, priority, status });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
     } catch (error) {
