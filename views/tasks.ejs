@@ -1,67 +1,105 @@
 <% const title="Tasks" ; %>
     <%- include('header', {title: title}) %>
 
-        <h1>
-            <%= title %>
-        </h1>
+        <div class="centertext">
+            <h1>
+                <%= title %>
+            </h1>
 
-        <form id="taskForm" method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br>
+            <form id="taskForm" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description"></textarea><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea><br>
 
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category"><br>
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category"><br>
 
-            <label for="label">Label:</label>
-            <input type="text" id="label" name="label"><br>
+                <label for="label">Label:</label>
+                <input type="text" id="label" name="label"><br>
 
-            <label for="dueDate">Due Date:</label>
-            <input type="date" id="dueDate" name="dueDate"><br>
+                <label for="dueDate">Due Date:</label>
+                <input type="datetime-local" id="dueDate" name="dueDate"><br>
 
-            <label for="priority">Priority Level: </label>
-            <input type="number" id="priority" min="0" max="3" value="0">
+                <label for="priority">Priority Level: </label>
+                <input type="number" id="priority" min="0" max="3" value="0"><br>
 
-            <input type="hidden" id="owner" name="owner" value="" readonly><br>
+                <label for="status">Status: </label>
+                <select name="status" id="status">
+                    <option value="Not started">Not started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Complete">Complete</option>
 
-            <input type="submit" value="Create Task">
-        </form>
-        <div id="messages"></div>
+                </select>
 
-        <!-- Display tasks -->
-        <div id="tasks-container">
-            <% tasks.forEach(task=> { %>
-                <div class="task-item">
-                    <h3>
-                        <%= task.name %>
-                    </h3>
-                    <p>Description: <%= task.description %>
-                    </p>
-                    <p>Category: <%= task.category %>
-                    </p>
-                    <p>Label: <%= task.label %>
-                    </p>
-                    <p>Due Date: <%= task.dueDate %>
-                    </p>
-                    <p>Priority: <%= task.priority %>
-                    </p>
-                    <button id="<%=task._id %>" class="deleteButton">Delete</button>
-                    <button class="updateButton" id="<%= task._id %>">Update</button>
-                </div>
-                <% }); %>
-        </div>
+                <input type="hidden" id="owner" name="owner" value="" readonly><br><br>
 
-        <!-- Pagination controls -->
-        <div class="pagination">
-            <% if (currentPage> 1) { %>
-                <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
-                <% } %>
-                    <span>Page <%= currentPage %></span>
-                    <% if (tasks.length===5) { %>
-                        <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
-                        <% } %>
+                <input type="submit" value="Create Task">
+            </form>
+            <div id="messages"></div>
+
+            <!-- Display tasks -->
+            <div id="tasks-container">
+                <% tasks.forEach(task=> { %>
+                    <div class="task-item" id="<%= task._id %>">
+                        <h3 class="task-name">
+                            <%= task.name %>
+                        </h3>
+                        <p class="task-description">Description: <%= task.description %>
+                        </p>
+                        <p class="task-category">Category: <%= task.category %>
+                        </p>
+                        <p class="task-label">Label: <%= task.label %>
+                        </p>
+                        <p class="task-dueDate">Due Date: <%= task.dueDate %>
+                        </p>
+                        <p class="task-priority">Priority: <%= task.priority %>
+                        </p>
+                        <p class="task-status">Status: <%= task.status %>
+                        </p>
+                        <button class="deleteButton">Delete</button>
+                        <button class="updateButton">Update</button>
+                        <form class="updateForm" style="display: none;">
+                            <label for="updateName">Name:</label>
+                            <input type="text" id="updateName" name="updateName" value="<%= task.name %>" required><br>
+                            <label for="updateDescription">Description:</label>
+                            <textarea id="updateDescription"
+                                name="updateDescription"><%= task.description %></textarea><br>
+                            <label for="updateCategory">Category:</label>
+                            <input type="text" id="updateCategory" name="updateCategory"
+                                value="<%= task.category %>"><br>
+                            <label for="updateLabel">Label:</label>
+                            <input type="text" id="updateLabel" name="updateLabel" value="<%= task.label %>"><br>
+                            <label for="updateDueDate">Due Date:</label>
+                            <input type="date" id="updateDueDate" name="updateDueDate" value="<%= task.dueDate %>"><br>
+                            <label for="updatePriority">Priority Level: </label>
+                            <input type="number" id="updatePriority" name="updatePriority" min="0" max="3"
+                                value="<%= task.priority %>"><br>
+                            <label for="status">Status: </label>
+                            <select name="status" id="status">
+                                <option value="Not started">Not started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Complete">Complete</option>
+                            </select><br><br>
+
+                            <button class="confirmUpdateButton">Confirm</button>
+                            <button type="button" class="cancelUpdateButton">Cancel</button>
+                        </form>
+                    </div>
+                    <% }); %>
+            </div>
+
+            <!-- Pagination controls -->
+            <div class="pagination">
+                <% if (currentPage> 1) { %>
+                    <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
+                    <% } %>
+                        <span>Page <%= currentPage %></span>
+                        <% if (tasks.length===5) { %>
+                            <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
+                            <% } %>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -71,7 +109,6 @@
             let userParsed = JSON.parse(userInfo);
 
             $('#owner').val(userParsed._id);
-
 
             $('#taskForm').submit(function (event) {
                 event.preventDefault(); // Prevent default form submission
@@ -84,7 +121,8 @@
                     label: $('#label').val(),
                     dueDate: $('#dueDate').val(),
                     owner: $('#owner').val(),
-                    priority: $('#priority').val()
+                    priority: $('#priority').val(),
+                    status: $("#status").val()
                 };
                 console.log(jsonData);
 
@@ -94,32 +132,53 @@
                     url: '/tasks',
                     contentType: 'application/json',
                     data: JSON.stringify(jsonData),
-                    success: function (task) {
-                        // Append the new task to the tasks container
-                        const taskContainer = $('#tasks-container');
-                        taskContainer.append(`
-                        <div class="task-item">
-                            <h3>${task.name}</h3>
-                            <p>Description: ${task.description}</p>
-                            <p>Category: ${task.category}</p>
-                            <p>Label: ${task.label}</p>
-                            <p>Due Date: ${task.dueDate}</p>
-                            <p>Priority: ${task.priority}</p>
-                            <button id ="${task._id}" class="deleteButton">Delete</button>
-                            <button class="updateButton" id="${task._id}">Update</button>
-                        </div>`);
+                    success: async function (savedTask) {
+                        try {
+                            $.ajax({
+                                type: 'GET',
+                                url: '/tasks',
+                                contentType: 'application/json',
+                                success: async function (result) {
+                                    console.log(result.tasks);
 
-                        // Clear the form input fields
-                        $('#name').val('');
-                        $('#description').val('');
-                        $('#category').val('');
-                        $('#label').val('');
-                        $('#dueDate').val('');
-                        $('#priority').val(0);
+                                    // Replace the existing tasks in the DOM with the updated list
+                                    $('#tasks-container').html('');
+                                    result.tasks.forEach(task => {
+                                        $('#tasks-container').append(`
+                    <div class="task-item">
+                        <h3>${task.name}</h3>
+                        <p>Description: ${task.description}</p>
+                        <p>Category: ${task.category}</p>
+                        <p>Label: ${task.label}</p>
+                        <p>Due Date: ${task.dueDate}</p>
+                        <p>Priority: ${task.priority}</p>
+                        <button id="${task._id}" class="deleteButton">Delete</button>
+                        <button class="updateButton" id="${task._id}">Update</button>
+                    </div>
+                `);
+                                    });
+
+                                    // Clear the form input fields
+                                    $('#name').val('');
+                                    $('#description').val('');
+                                    $('#category').val('');
+                                    $('#label').val('');
+                                    $('#dueDate').val('');
+                                    $('#priority').val(0);
+
+                                    // Display success message
+                                    $('#messages').text('Task created successfully!');
+                                }
+                            });
 
 
-                        // Display success message
-                        $('#messages').text('Task created successfully!');
+
+
+                        } catch (error) {
+                            console.error('Error:', error);
+                            // Handle error here
+                            $("#messages").text("Error: ", error);
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
@@ -127,7 +186,147 @@
                         $("#messages").text("Error: ", error);
                     }
                 });
+
+            });
+
+            $(document).ready(function () {
+                // Update button click event
+                $('#tasks-container').on('click', '.updateButton', function () {
+                    const taskItem = $(this).closest('.task-item');
+                    const isEditing = taskItem.hasClass('editing');
+
+                    // Toggle between text view and update form
+                    if (!isEditing) {
+                        // Hide delete and edit buttons
+                        taskItem.find('.deleteButton').hide();
+                        taskItem.find('.updateButton').hide();
+
+                        taskItem.addClass('editing');
+                        taskItem.find('.task-name').hide();
+                        taskItem.find('.task-description').hide();
+                        taskItem.find('.task-category').hide();
+                        taskItem.find('.task-label').hide();
+                        taskItem.find('.task-dueDate').hide();
+                        taskItem.find('.task-priority').hide();
+                        taskItem.find('.updateForm').show();
+                    } else {
+                        // Show delete and edit buttons
+                        taskItem.find('.deleteButton').show();
+                        taskItem.find('.updateButton').show();
+
+                        taskItem.removeClass('editing');
+                        taskItem.find('.task-name').show();
+                        taskItem.find('.task-description').show();
+                        taskItem.find('.task-category').show();
+                        taskItem.find('.task-label').show();
+                        taskItem.find('.task-dueDate').show();
+                        taskItem.find('.task-priority').show();
+                        taskItem.find('.updateForm').hide();
+                    }
+                });
+
+                // Confirm update button click event
+                $('#tasks-container').on('click', '.confirmUpdateButton', function () {
+                    const taskItem = $(this).closest('.task-item');
+                    const taskId = taskItem.attr('id');
+                    const updatedData = {
+                        name: taskItem.find('#updateName').val(),
+                        description: taskItem.find('#updateDescription').val(),
+                        category: taskItem.find('#updateCategory').val(),
+                        label: taskItem.find('#updateLabel').val(),
+                        dueDate: taskItem.find('#updateDueDate').val(),
+                        priority: taskItem.find('#updatePriority').val()
+                    };
+
+                    // Send AJAX request to update task
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/tasks/' + taskId,
+                        contentType: 'application/json',
+                        data: JSON.stringify(updatedData),
+                        success: function (response) {
+                            // Update task data in the DOM
+                            taskItem.find('.task-name').text(updatedData.name);
+                            taskItem.find('.task-description').text(updatedData.description);
+                            taskItem.find('.task-category').text(updatedData.category);
+                            taskItem.find('.task-label').text(updatedData.label);
+                            taskItem.find('.task-dueDate').text(updatedData.dueDate);
+                            taskItem.find('.task-priority').text(updatedData.priority);
+
+                            // Hide update form and show regular text
+                            taskItem.removeClass('editing');
+                            taskItem.find('.task-name').show();
+                            taskItem.find('.task-description').show();
+                            taskItem.find('.task-category').show();
+                            taskItem.find('.task-label').show();
+                            taskItem.find('.task-dueDate').show();
+                            taskItem.find('.task-priority').show();
+                            taskItem.find('.updateForm').hide();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            // Handle error here
+                            $("#messages").text("Error: " + error);
+                        }
+                    });
+                });
+
+                // Cancel update button click event
+                $('#tasks-container').on('click', '.cancelUpdateButton', function () {
+                    const taskItem = $(this).closest('.task-item');
+
+                    // Show delete and edit buttons
+                    taskItem.find('.deleteButton').show();
+                    taskItem.find('.updateButton').show();
+
+                    // Hide update form and show regular text
+                    taskItem.removeClass('editing');
+                    taskItem.find('.task-name').show();
+                    taskItem.find('.task-description').show();
+                    taskItem.find('.task-category').show();
+                    taskItem.find('.task-label').show();
+                    taskItem.find('.task-dueDate').show();
+                    taskItem.find('.task-priority').show();
+                    taskItem.find('.updateForm').hide();
+                });
+
+                // Delete button click event
+                $('#tasks-container').on('click', '.deleteButton', function () {
+                    const taskItem = $(this).closest('.task-item');
+                    const taskId = taskItem.attr('id');
+
+                    // If not in editing mode, delete the task
+                    if (!taskItem.hasClass('editing')) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '/tasks/' + taskId,
+                            success: function (response) {
+                                // Remove the task item from the DOM
+                                taskItem.remove();
+                                // Optionally, you can display a success message or perform any other actions
+                                console.log('Task deleted successfully');
+                                $('#messages').text("Task deleted successfully!");
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error:', error);
+                                // Handle error here
+                                $("#messages").text("Error: " + error);
+                            }
+                        });
+                    } else {
+                        // Hide update form and show regular text
+                        taskItem.removeClass('editing');
+                        taskItem.find('.task-name').show();
+                        taskItem.find('.task-description').show();
+                        taskItem.find('.task-category').show();
+                        taskItem.find('.task-label').show();
+                        taskItem.find('.task-dueDate').show();
+                        taskItem.find('.task-priority').show();
+                        taskItem.find('.updateForm').hide();
+                    }
+                });
             });
         </script>
+
 
         <%- include('footer') %>

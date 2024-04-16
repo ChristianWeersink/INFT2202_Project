@@ -9,7 +9,20 @@ const mongoose = require('mongoose');
 // CREATE: Create a new task
 const createTask = async (req, res) => {
     try {
-        const { name, description, category, label, dueDate, owner, priority } = req.body;
+        var { name, description, category, label, dueDate, owner, priority } = req.body;
+        // Check for empty null values 
+        if (!description) {
+            description = "No Description";
+        }
+        if (!category) {
+            category = "No Category";
+        }
+        if (!label) {
+            label = "No label";
+        }
+        if(!dueDate){
+            dueDate = 'No date';
+        }
         const newTask = new Task({ name, description, category, label, dueDate, owner, priority });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
@@ -36,8 +49,16 @@ const getAllTasks = async (req, res) => {
         // Retrieve tasks belonging to the user with pagination
         const tasks = await Task.find({ owner: userId }).skip(skip).limit(pageSize);
 
-        // Render the tasks page with the tasks array and pagination info
-        res.render('tasks', { title: "Tasks", tasks, currentPage: page });
+        // Check if it's an AJAX request
+        if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+            // If it's an AJAX request, send JSON response
+            console.log("its an ajax request");
+            res.json({ tasks: tasks, currentPage: page });
+        } else {
+            // If it's a regular request, render the tasks page with the tasks array and pagination info
+            console.log("regular request");
+            res.render('tasks', { title: "Tasks", tasks: tasks, currentPage: page });
+        }
 
     } catch (error) {
         // Handle errors
@@ -46,11 +67,14 @@ const getAllTasks = async (req, res) => {
 };
 
 
+
 // READ: Get a single task by ID
 const getTaskById = async (req, res) => {
     try {
         // Retrieve the task by ID from the database
+        console.log(req.params.id);
         const task = await Task.findById(req.params.id);
+
 
         // Check if task exists
         if (!task) {
@@ -69,6 +93,9 @@ const getTaskById = async (req, res) => {
 const updateTaskById = async (req, res) => {
     try {
         // Retrieve the task by ID from the database and update its fields
+        if(!req.body.dueDate){
+            req.body.dueDate = "No date";
+        }
         const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
         // Check if task exists
@@ -88,6 +115,7 @@ const updateTaskById = async (req, res) => {
 const deleteTaskById = async (req, res) => {
     try {
         const taskId = req.params.id;
+        console.log(taskId);
         const task = await Task.findById(taskId);
         if (!task) {
             return res.status(404).json({ message: "Task not found" });

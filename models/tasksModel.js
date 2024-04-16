@@ -18,7 +18,7 @@ const taskSchema = mongoose.Schema({
         default: "No label",
     },
     dueDate: {
-        type: Date,
+        type: String,
         default: "",
     },
     status: {

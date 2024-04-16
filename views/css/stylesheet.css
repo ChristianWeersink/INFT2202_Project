@@ -89,12 +89,38 @@ a:hover .underline {
     color: #561017;
     text-shadow: 0.25px 0.25px 0 white;
 }
+
+/* Task styles */
+#messages {
+    padding: 10px;
+}
+
+#tasks-container {
+    width: 100%;
+    background-color: #183E4E;
+    display: flex;
+}
+
 .task-item {
+    
     border: #183E4E 1px solid;
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
-    width: 400px;
+    width: 300px;
+    background-color: aquamarine;
+    text-align: center;
+}
+
+.task-item:hover {
+    background-color: #561017;
+}
+.task-item button {
+    background-color: #183E4E;
+    border-radius: 5px;
+}
+.task-item button:hover {
+    background-color: bisque;
 }
 
 .pagination {

@@ -9,7 +9,7 @@ const passport = require('./middleware/authenticate'); // Import Passport config
 const User = require('./models/userModel');
 const Task = require('./models/tasksModel');
 const dotenv = require('dotenv').config();
-const {createTask, getAllTasks} = require("./controllers/tasksController");
+const {createTask, getAllTasks, deleteTaskById, updateTaskById} = require("./controllers/tasksController");
 const {registerUser} = require("./controllers/userController");
 
 connectDb();
@@ -105,6 +105,23 @@ app.get('/logout', (req, res) => {
 });
 
 // Tasks route
+
+app.delete('/tasks/:id', async (req, res) => {
+        try {
+                await deleteTaskById(req, res);
+        } catch (error) {
+                res.status(500).json({message: error.message});
+        }
+})
+
+app.put('/tasks/:id', async (req, res) => {
+        try {
+                await updateTaskById(req, res);
+        } catch (error) {
+                res.status(500).json({message: error.message});
+        }
+})
+
 app.get('/tasks', async (req, res) => {
         try {
                 // Retrieve all tasks from the database
