@@ -36,11 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 // Routes
 app.use('/api/students', require('./routes/studentRoute'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+
 
 
 // Middleware
@@ -147,17 +147,17 @@ app.post('/tasks', async (req, res) => {
 // Footer routes
 
 // About Us route
-app.get('/aboutus', (req, res) => {
+app.get('/information/aboutus', (req, res) => {
         res.render('aboutus');
 });
 
 // Cookie Policy route
-app.get('/cookies', (req, res) => {
+app.get('/information/cookies', (req, res) => {
         res.render('cookies');
 });
 
 // Privacy Policy route
-app.get('/privacy', (req, res) => {
+app.get('/information/privacy', (req, res) => {
         res.render('privacy');
 });
 

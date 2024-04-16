@@ -1,17 +1,19 @@
 <% const title = "Home"; %>
-<%- include('header', {title: title}) %>
+<%- include('./includes/header', {title: title}) %>
 
 <div class="centertext">
 <h1>Task Helper: The Place for Productivity</h1>
+<br><br>
 
+<!-- Load all images for page to carousel through -->
 <div id="carouselImage">
-
+    <div class="carousel">
     <div class="Images">
         <img src="/images/image1.png" alt="Student studying with textbook">
     </div>
 
     <div class="Images">
-        <img src="/images/image2.jpg" alt="Filing cabinet with papers inside">
+        <img src="/images/image2.png" alt="Filing cabinet with papers inside">
     </div>
 
     <div class="Images">
@@ -19,11 +21,12 @@
     </div>
 
     <div class="Images">
-        <img src="/images/image4.jpg" alt="Clipboard clip art">
+        <img src="/images/image4.png" alt="Clipboard clip art">
     </div>
-
+    </div>
 </div>
 
+<!-- Carousel images -->
 <script>
 
     const carouselDiv = document.getElementById("carouselImage");
@@ -49,15 +52,16 @@
     }
 
     setInterval(nextPic, 3000);
+    setInterval(nextImage, 3000);
 
 </script>
 
 
-
+<!-- Sign in link -->
 <br><br><br>
 <h2> <a href="./sign-in" target="_blank"> <span class="underline"> Sign In Here </span> </a> </h2>
 
 </div>
 
-<%- include('footer') %>
+<%- include('./includes/footer') %>
 

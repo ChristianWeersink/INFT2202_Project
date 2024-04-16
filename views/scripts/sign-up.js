@@ -57,6 +57,7 @@ document.getElementById("sign-up").addEventListener("submit", async function (ev
     }
     if (!isValid) {
         formMessage.innerHTML = message;
+        formMessage.classList.add('error');
     }
     else {
         try {
@@ -70,13 +71,17 @@ document.getElementById("sign-up").addEventListener("submit", async function (ev
             const data = await res.json();
             if (data.success) {
                 formMessage.innerHTML = "Sign up successful. Please <a href='./sign-in'>sign in.<a>";
+                formMessage.classList.add('success');
             } else {
                 formMessage.innerHTML = "Error signing up.";
+                formMessage.classList.add('error');
             }
         }
         catch (error) {
             console.log(error);
             formMessage.innerHTML = "An error occurred.";
+            formMessage.classList.add('error');
         }
     }
+    
 });

@@ -1,5 +1,5 @@
 <% const title = "Sign Up"; %>
-<%- include('header', {title: title}) %>
+<%- include('./includes/header', {title: title}) %>
 
 <div class="centertext">
 
@@ -17,9 +17,9 @@
         
             <label for="su_password">Choose a Password:</label>
             <input type="password" id="su_password" name="su_password" required>
-            <br><br>
+            <br>
 
-            <label for="su_confirm_password">Confirm Password:</label>
+            <label for="su_confirm_password">Confirm Password:&nbsp;</label>
             <input type="password" id="su_confirm_password" name="su_confirm_password" required>
 
             <br>
@@ -29,7 +29,7 @@
         <input type="submit" value="Sign Up">
         
     </form>
-    <p id="message" class="error"></p>
+    <p id="message" ></p>
 </div>
 
 
@@ -42,4 +42,4 @@
 
 
 
-<%- include('footer') %>
+<%- include('./includes/footer') %>

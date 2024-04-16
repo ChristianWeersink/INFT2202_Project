@@ -1,5 +1,5 @@
 <% const title="Sign In" ; %>
-    <%- include('header', {title: title}) %>
+    <%- include('./includes/header', {title: title}) %>
 
     <div class="centertext">
         <h1>
@@ -21,6 +21,9 @@
             </form>
         </div>
         <div id="message"></div>
+
+       
+
 
         <script>
             document.getElementById("sign-in").addEventListener("submit", async function (event) {
@@ -54,12 +57,14 @@
                     } else {
                         console.log('login failure :(');
                         document.getElementById("message").textContent = "Login failed. Please try again.";
+                        document.getElementById("message").classList.add('error');
                     }
                 } catch (error) {
-                    console.error("Error:", error);
-                    document.getElementById("message").textContent = "An error occurred.";
+                    console.log("Error:", error);
+                    document.getElementById("message").textContent = "Invalid sign-in, try again."
+                    document.getElementById("message").classList.add('error');
                 }
             });
         </script>
 
-        <%- include('footer') %>
+        <%- include('./includes/footer') %>

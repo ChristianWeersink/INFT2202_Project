@@ -67,6 +67,8 @@ a:hover .underline {
     text-decoration: underline;
 }
 
+
+/* For index.ejs carousel */
 .Images {
     opacity: 1;
     overflow: hidden;
@@ -76,19 +78,46 @@ a:hover .underline {
 .Images img {
     width: 300px;
     height: auto;
-    object-fit: cover;
 }
-
 
 
 #carouselImage {
     height: 300px;
 }
 
+
+/* Message styling */
 .error {
-    color: #561017;
-    text-shadow: 0.25px 0.25px 0 white;
+    margin: 40px auto;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #3E0208;
+    border-radius: 5px;
+    font-size:large;
+    font-weight: bold;
+    color: white;
+    background-color: #9a212d;
+    width: 300px;
 }
+
+.success {
+    margin: 40px auto;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #04211B;
+    border-radius: 5px;
+    font-size:large;
+    font-weight: bold;
+    background-color: #034C3C;
+    color: white;
+    width: 300px;
+}
+
+.success a {
+    color: white;
+    text-decoration: underline;
+}
+
 
 /* Task styles */
 #messages {
@@ -97,30 +126,31 @@ a:hover .underline {
 
 #tasks-container {
     width: 100%;
-    background-color: #183E4E;
+    background: radial-gradient(circle, #BFC7BD, #EAEBED);
     display: flex;
+    justify-content: center;
 }
 
 .task-item {
-    
-    border: #183E4E 1px solid;
+    border: #3A4449 1px solid;
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
     width: 300px;
-    background-color: aquamarine;
+    background-color: #709389;
     text-align: center;
 }
 
 .task-item:hover {
-    background-color: #561017;
+    background-color: #9BBDB4;
 }
 .task-item button {
-    background-color: #183E4E;
+    background-color: #16262E;
     border-radius: 5px;
+    color: #FFFFFF;
 }
 .task-item button:hover {
-    background-color: bisque;
+    background-color: #3A4449;
 }
 
 .pagination {
@@ -129,7 +159,7 @@ a:hover .underline {
 
 
 
-
+/* Footer CSS */
 #footer {
     margin-top: auto;
 	padding: 10px;
