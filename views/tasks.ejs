@@ -1,12 +1,12 @@
 <% const title="Tasks" ; %>
     <%- include('./includes/header', {title: title}) %>
-<script>
-    //redirect if they are logged in already
-    const loggedIn = getCookie("loggedIn");
-            if(!loggedIn){
+        <script>
+            //redirect if they are logged in already
+            const loggedIn = getCookie("loggedIn");
+            if (!loggedIn) {
                 window.location.href = "/sign-in";
             }
-</script>
+        </script>
         <div class="centertext">
             <h1>
                 <%= title %>
@@ -26,7 +26,7 @@
                 <input type="text" id="label" name="label"><br>
 
                 <label for="dueDate">Due Date:</label>
-                <input type="datetime-local" id="dueDate" name="dueDate"><br>
+                <input type="date" id="dueDate" name="dueDate"><br>
 
                 <label for="priority">Priority Level: </label>
                 <input type="number" id="priority" min="0" max="3" value="0"><br>
@@ -45,6 +45,13 @@
             </form>
             <div id="messages"> </div>
 
+            <label for="sortTasks">Sort by:</label>
+            <select id="sortTasks">
+                <option value="name">Name</option>
+                <option value="dueDate">Due Date</option>
+                <option value="priority">Priority</option>
+            </select>
+
             <!-- Display tasks -->
             <div id="tasks-container">
                 <% tasks.forEach(task=> { %>
@@ -58,7 +65,7 @@
                         </p>
                         <p class="task-label">Label: <%= task.label %>
                         </p>
-                        <p class="task-dueDate">Due Date: <%= task.dueDate %>
+                        <p class="task-dueDate">Due Date: 2024-04-22
                         </p>
                         <p class="task-priority">Priority: <%= task.priority %>
                         </p>
@@ -98,13 +105,7 @@
 
             <!-- Pagination controls -->
             <div class="pagination">
-                <% if (currentPage> 1) { %>
-                    <a href="/tasks?page=<%= currentPage - 1 %>">Previous</a>
-                    <% } %>
-                        <span>Page <%= currentPage %></span>
-                        <% if (tasks.length >= 5) { %>
-                            <a href="/tasks?page=<%= currentPage + 1 %>">Next</a>
-                            <% } %>
+
             </div>
         </div>
 
@@ -113,7 +114,6 @@
             // Access userInfo and set the owner field
             let userInfo = getCookie('user');
             let userParsed = JSON.parse(userInfo);
-
             $('#owner').val(userParsed._id);
 
             $('#taskForm').submit(function (event) {
@@ -140,7 +140,8 @@
                     data: JSON.stringify(jsonData),
                     success: async function (response) {
                         try {
-                            updateTasks();
+                            updateTasks($('#sortTasks').val(), 1);
+
 
                             // Clear the form input fields
                             $('#name').val('');
@@ -152,6 +153,8 @@
 
                             // Display success message
                             $('#messages').text('Task created successfully!').addClass('success');
+
+                            
 
 
                         } catch (error) {
@@ -177,6 +180,7 @@
 
                     // Toggle between text view and update form
                     if (!isEditing) {
+                        // Show task item
                         // Hide delete and edit buttons
                         taskItem.find('.deleteButton').hide();
                         taskItem.find('.updateButton').hide();
@@ -188,7 +192,9 @@
                         taskItem.find('.task-label').hide();
                         taskItem.find('.task-dueDate').hide();
                         taskItem.find('.task-priority').hide();
-                        taskItem.find('.updateForm').show();
+                        taskItem.find('.task-status').hide();
+
+                        taskItem.find('.updateForm').show(); // Show the update form
                     } else {
                         // Show delete and edit buttons
                         taskItem.find('.deleteButton').show();
@@ -201,22 +207,29 @@
                         taskItem.find('.task-label').show();
                         taskItem.find('.task-dueDate').show();
                         taskItem.find('.task-priority').show();
-                        taskItem.find('.updateForm').hide();
+                        taskItem.find('.task-status').show();
+
+                        taskItem.find('.updateForm').hide(); // Hide the update form
                     }
                 });
 
+
                 // Confirm update button click event
-                $('#tasks-container').on('click', '.confirmUpdateButton', function () {
+                $('#tasks-container').on('click', '.confirmUpdateButton', function (e) {
+                    e.preventDefault();
                     const taskItem = $(this).closest('.task-item');
-                    const taskId = taskItem.attr('id');
+                    const taskId = taskItem.data('task-id');
+                    console.log(taskId);
                     const updatedData = {
                         name: taskItem.find('#updateName').val(),
                         description: taskItem.find('#updateDescription').val(),
                         category: taskItem.find('#updateCategory').val(),
                         label: taskItem.find('#updateLabel').val(),
                         dueDate: taskItem.find('#updateDueDate').val(),
-                        priority: taskItem.find('#updatePriority').val()
+                        priority: taskItem.find('#updatePriority').val(),
+                        status: taskItem.find('#updateStatus').val()
                     };
+                    console.log(updatedData);
 
                     // Send AJAX request to update task
                     $.ajax({
@@ -226,14 +239,18 @@
                         data: JSON.stringify(updatedData),
                         success: function (response) {
                             // Update task data in the DOM
-                            taskItem.find('.task-name').text(updatedData.name);
-                            taskItem.find('.task-description').text(updatedData.description);
-                            taskItem.find('.task-category').text(updatedData.category);
-                            taskItem.find('.task-label').text(updatedData.label);
-                            taskItem.find('.task-dueDate').text(updatedData.dueDate);
-                            taskItem.find('.task-priority').text(updatedData.priority);
+                            console.log(response);
+                            taskItem.find('.task-name').text(response.name);
+                            taskItem.find('.task-description').text("Description: " + response.description);
+                            taskItem.find('.task-category').text("Category: " + response.category);
+                            taskItem.find('.task-label').text("Label: " + response.label);
+                            taskItem.find('.task-dueDate').text("Due Date: " + response.dueDate);
+                            taskItem.find('.task-priority').text("Priority: " + response.priority);
+                            taskItem.find('.task-status').text("Status: " + response.status);
 
-                            // Hide update form and show regular text
+                            taskItem.find('.deleteButton').show();
+                            taskItem.find('.updateButton').show();
+
                             taskItem.removeClass('editing');
                             taskItem.find('.task-name').show();
                             taskItem.find('.task-description').show();
@@ -241,7 +258,9 @@
                             taskItem.find('.task-label').show();
                             taskItem.find('.task-dueDate').show();
                             taskItem.find('.task-priority').show();
-                            taskItem.find('.updateForm').hide();
+                            taskItem.find('.task-status').show();
+
+                            taskItem.find('.updateForm').hide(); // Hide the update form
                         },
                         error: function (xhr, status, error) {
                             console.error('Error:', error);
@@ -267,6 +286,7 @@
                     taskItem.find('.task-label').show();
                     taskItem.find('.task-dueDate').show();
                     taskItem.find('.task-priority').show();
+                    taskItem.find('.task-status').show();
                     taskItem.find('.updateForm').hide();
                 });
 
@@ -274,7 +294,7 @@
                 $('#tasks-container').on('click', '.deleteButton', function () {
                     const taskId = $(this).attr('id');
                     const taskItem = $(this).closest('.task-item'); // Retrieve taskItem here
-                    
+
                     console.log(taskId);
                     console.log(taskItem);
 
@@ -309,50 +329,144 @@
                 });
             });
 
-            function updateTasks() {
+
+
+            $(document).ready(function () {
+                // Handle pagination link click event
+                $('.pagination').on('click', '.pagination-link', function (e) {
+                    e.preventDefault(); // Prevent default anchor tag behavior
+
+                    const page = $(this).data('page');
+
+                    const sortBy = $('#sortTasks').val(); // Get the current sorting option
+                    updateTasks(sortBy, page); // Fetch tasks for the clicked page
+                });
+            });
+
+
+
+
+            $(document).ready(function () {
+
+                // Handle sorting option change
+                $('#sortTasks').change(function () {
+                    const sortBy = $(this).val();
+                    updateTasks(sortBy, 1);
+                });
+
+                // Call updateTasks initially with default sorting
+                updateTasks('name', 1); // Default sorting by name
+
+            });
+
+            function updateTasks(sortBy, page) {
                 $.ajax({
                     type: 'GET',
                     url: '/tasks',
+                    data: { sortBy: sortBy, page: page }, // Pass sorting parameter and page number to the server
                     contentType: 'application/json',
                     success: async function (result) {
-                        console.log(result.tasks);
-
-                        // Replace the existing tasks in the DOM with the updated list
-                        $('#tasks-container').html('');
-                        result.tasks.forEach(task => {
-                            $('#tasks-container').append(`
-                    <div class="task-item">
-                        <h3>${task.name}</h3>
-                        <p>Description: ${task.description}</p>
-                        <p>Category: ${task.category}</p>
-                        <p>Label: ${task.label}</p>
-                        <p>Due Date: ${task.dueDate}</p>
-                        <p>Priority: ${task.priority}</p>
-                        <p>Status: ${task.status}</p>
-                        <button id="${task._id}" class="deleteButton">Delete</button>
-                        <button class="updateButton" id="${task._id}">Update</button>
-                    </div>
-                `);
-                        });
-
-                        $('.pagination').html('');
-                        if (result.currentPage > 1) {
-                            $('.pagination').append(`<a href="/tasks?page=${result.currentPage - 1}">Previous </a>`);
-                        }
-                        $('.pagination').append(`<span>Page ${result.currentPage}</span>`);
-                        if (result.tasks.length >= 5) {
-                            $('.pagination').append(`<a href="/tasks?page=${result.currentPage + 1}"> Next</a>`);
-                            console.log (result.currentPage);
-                        }
+                        renderTasks(result.tasks, result.currentPage); // Pass both tasks and currentPage
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
                     }
                 });
             }
 
-        
+
+
+
+
+            function renderTasks(tasks, currentPage) {
+                $('#tasks-container').html('');
+                tasks.forEach(task => {
+                    const dueDate = new Date(task.dueDate).toLocaleDateString('en-CA'); //format date
+                    $('#tasks-container').append(`
+            <div class="task-item" data-task-id="${task._id}">
+                <h3 class='task-name'>${task.name}</h3>
+                <p class='task-description'>Description: ${task.description}</p>
+                <p class='task-category'>Category: ${task.category}</p>
+                <p class='task-label'>Label: ${task.label}</p>
+                <p class='task-dueDate'>Due Date: ${dueDate}</p>
+                <p class='task-priority'>Priority: ${task.priority}</p>
+                <p class='task-status'>Status: ${task.status}</p>
+                <button id="${task._id}" class="deleteButton">Delete</button>
+                <button class="updateButton" id="${task._id}">Update</button>
+
+
+
+                <form class="updateForm" style="display: none;">
+                            <label for="updateName">Name:</label>
+                            <input type="text" id="updateName" name="updateName" value="${task.name}" required><br>
+                            <label for="updateDescription">Description:</label>
+                            <textarea id="updateDescription"
+                                name="updateDescription">${task.description}</textarea><br>
+                            <label for="updateCategory">Category:</label>
+                            <input type="text" id="updateCategory" name="updateCategory"
+                                value="${task.category}"><br>
+                            <label for="updateLabel">Label:</label>
+                            <input type="text" id="updateLabel" name="updateLabel" value="${task.label}"><br>
+                            <label for="updateDueDate">Due Date:</label>
+                            <input type="date" id="updateDueDate" name="updateDueDate" value="${dueDate}"><br>
+                            <label for="updatePriority">Priority Level: </label>
+                            <input type="number" id="updatePriority" name="updatePriority" min="0" max="3"
+                                value="${task.priority}"><br>
+                            <label for="status">Status: </label>
+                            <select name="status" id="updateStatus">
+                            <option value="Not started" ${task.status === 'Not started' ? 'selected' : ''}>Not started</option>
+                            <option value="In Progress" ${task.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Complete" ${task.status === 'Complete' ? 'selected' : ''}>Complete</option>
+                            </select>
+                            <br><br>
+
+                            <button class="confirmUpdateButton">Confirm</button>
+                            <button type="button" class="cancelUpdateButton">Cancel</button>
+                        </form>
+            </div>
+        `);
+                });
+
+                $('.pagination').html('');
+                if (currentPage > 1) {
+                    $('.pagination').append(`<a class='pagination-link' href="/tasks?page=${currentPage - 1}" data-page="${currentPage - 1}">Previous </a>`);
+                }
+                $('.pagination').append(`<span>Page ${currentPage}</span>`);
+                if (tasks.length >= 10) {
+                    $('.pagination').append(`<a class='pagination-link' href="/tasks?page=${currentPage + 1}" data-page="${currentPage + 1}"> Next</a>`);
+                }
+
+            }
+
+
+
 
 
 
         </script>
 
+        <footer>
 
-        <%- include('./includes/footer') %>
+            <div id="task-footer">
+                <hr>
+                <p> &copy; <span id="currentYear"></span> Christian Weersink and Christina Jackson </p>
+
+                <p> <a href="../information/aboutus.ejs" target="_blank"> <span class="underline">About Us </span>
+                        &nbsp; </a> <a href="../information/cookies.ejs" target="_blank">| &nbsp; <span
+                            class="underline">Cookie Policy </span> &nbsp;</a> <a href="../information/privacy.ejs"
+                        target="_blank">| &nbsp; <span class="underline">Privacy Policy </span></a> </p>
+            </div>
+            <script>
+
+                var currentYear = new Date().getFullYear();
+
+                document.getElementById('currentYear').textContent = currentYear;
+            </script>
+
+
+
+
+        </footer>
+        </body>
+
+        </html>

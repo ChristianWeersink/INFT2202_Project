@@ -129,6 +129,7 @@ a:hover .underline {
     background: radial-gradient(circle, #BFC7BD, #EAEBED);
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .task-item {
@@ -161,12 +162,25 @@ a:hover .underline {
 }
 
 
+
+
+
 /* Footer CSS */
 #footer {
     margin-top: auto;
 	padding: 10px;
     text-align: center;
-    position: fixed;
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 50;
+}
+
+#task-footer {
+    margin-top: auto;
+	padding: 10px;
+    text-align: center;
+    position:sticky;
     bottom: 0;
     width: 100%;
     z-index: 50;

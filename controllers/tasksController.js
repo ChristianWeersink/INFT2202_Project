@@ -23,6 +23,13 @@ const createTask = async (req, res) => {
         if(!dueDate){
             dueDate = '2024-12-24';
         }
+        else{
+            // Parse the incoming date string
+            const parsedDate = new Date(dueDate);
+            // Format the date as "yyyy-mm-dd"
+            const formattedDate = parsedDate.toISOString().split('T')[0];
+            dueDate = formattedDate;
+        }
         const newTask = new Task({ name, description, category, label, dueDate, owner, priority, status });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
@@ -41,30 +48,44 @@ const getAllTasks = async (req, res) => {
 
         // Pagination parameters
         const page = parseInt(req.query.page) || 1; // Default page is 1
-        const pageSize = 5; // Number of tasks per page
+        const pageSize = 10; // Number of tasks per page
 
         // Calculate skip value
         const skip = (page - 1) * pageSize;
 
-        // Retrieve tasks belonging to the user with pagination
-        const tasks = await Task.find({ owner: userId }).skip(skip).limit(pageSize);
+        // Retrieve sortBy parameter from query
+        const sortBy = req.query.sortBy || 'name'; // Default sorting by name
+
+        // Retrieve tasks belonging to the user with pagination and sorting
+        let tasks;
+        if (sortBy === 'name') {
+            tasks = await Task.aggregate([
+                { $match: { owner: userId } }, // Match tasks owned by the user
+                { $addFields: { lowerName: { $toLower: "$name" } } }, // Add a new field with lowercase name
+                { $sort: { lowerName: 1 } }, // Sort by lowercase name
+                { $project: { lowerName: 0 } } // Exclude the lowercase name field from the result
+            ]).skip(skip).limit(pageSize);
+        } else if (sortBy === 'dueDate') {
+            tasks = await Task.find({ owner: userId }).skip(skip).limit(pageSize).sort({ dueDate: 1 });
+        } else if (sortBy === 'priority') {
+            tasks = await Task.find({ owner: userId }).skip(skip).limit(pageSize).sort({ priority: -1 });
+        }
 
         // Check if it's an AJAX request
         if (req.xhr || req.headers.accept.indexOf('json') > -1) {
             // If it's an AJAX request, send JSON response
-            console.log("its an ajax request");
             res.json({ tasks: tasks, currentPage: page });
         } else {
             // If it's a regular request, render the tasks page with the tasks array and pagination info
-            console.log("regular request");
+
             res.render('tasks', { title: "Tasks", tasks: tasks, currentPage: page });
         }
-
     } catch (error) {
         // Handle errors
-        res.render('sign-in', {message: "You need to be signed in to view this page."});
+        res.render('sign-in', { message: "You need to be signed in to view this page." });
     }
 };
+
 
 
 
@@ -92,11 +113,14 @@ const getTaskById = async (req, res) => {
 // UPDATE: Update a task by ID
 const updateTaskById = async (req, res) => {
     try {
+        console.log(req.body);
         // Retrieve the task by ID from the database and update its fields
         if(!req.body.dueDate){
             req.body.dueDate = "No date";
         }
+        
         const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log(updatedTask);
 
         // Check if task exists
         if (!updatedTask) {
@@ -110,6 +134,7 @@ const updateTaskById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // DELETE: Delete a task by ID
 const deleteTaskById = async (req, res) => {
