@@ -153,10 +153,12 @@ a:hover .underline {
     background-color: #3A4449;
 }
 
-.pagination {
-    z-index: 1000;
+.pagination a{
+    font-weight: bolder;
 }
-
+.pagination a:hover{
+    text-decoration: underline;
+}
 
 
 /* Footer CSS */

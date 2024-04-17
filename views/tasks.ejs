@@ -1,6 +1,12 @@
 <% const title="Tasks" ; %>
     <%- include('./includes/header', {title: title}) %>
-
+<script>
+    //redirect if they are logged in already
+    const loggedIn = getCookie("loggedIn");
+            if(!loggedIn){
+                window.location.href = "/sign-in";
+            }
+</script>
         <div class="centertext">
             <h1>
                 <%= title %>
@@ -342,7 +348,7 @@
                 });
             }
 
-
+        
 
 
 

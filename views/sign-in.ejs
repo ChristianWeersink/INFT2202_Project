@@ -26,6 +26,7 @@
 
 
         <script>
+
             document.getElementById("sign-in").addEventListener("submit", async function (event) {
                 event.preventDefault();
 
@@ -68,3 +69,12 @@
         </script>
 
         <%- include('./includes/footer') %>
+        
+        <script>
+            //redirect if they are logged in already
+            const loggedIn = getCookie("loggedIn");
+            if(loggedIn){
+                window.location.href = "/dashboard";
+            }
+
+        </script>

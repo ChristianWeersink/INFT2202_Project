@@ -1,6 +1,7 @@
 <% const title = "Sign Up"; %>
 <%- include('./includes/header', {title: title}) %>
 
+
 <div class="centertext">
 
     <h1><%=title %></h1>
@@ -43,3 +44,12 @@
 
 
 <%- include('./includes/footer') %>
+
+<script>
+    //redirect if they are logged in already
+    const loggedIn = getCookie("loggedIn");
+    if(loggedIn){
+        window.location.href = "/dashboard";
+    }
+
+</script>

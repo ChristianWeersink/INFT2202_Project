@@ -40,7 +40,8 @@
         if (isLoggedIn) {
             // User is logged in, display sign-out link
             navLinks.append('<li><a href="./logout">| &nbsp; <span class="underline">Sign out</span></a></li>');
-            navLinks.append('<li><a href="./tasks"><span class="underline">Tasks</span></a></li>');
+            navLinks.append('<li><a href="./tasks">| &nbsp; <span class="underline">Tasks</span></a></li>');
+            navLinks.append('<li><a href="./dashboard"><span class="underline">Dashboard</span></a></li>')
         } else {
             // User is not logged in, display sign-in and sign-up links
             navLinks.append('<li><a href="./sign-in">| &nbsp; <span class="underline">Sign in</span></a></li>');

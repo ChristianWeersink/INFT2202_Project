@@ -62,7 +62,7 @@ const getAllTasks = async (req, res) => {
 
     } catch (error) {
         // Handle errors
-        res.status(500).json({ message: error.message });
+        res.render('sign-in', {message: "You need to be signed in to view this page."});
     }
 };
 

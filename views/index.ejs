@@ -59,9 +59,19 @@
 
 <!-- Sign in link -->
 <br><br><br>
-<h2> <a href="./sign-in" target="_blank"> <span class="underline"> Sign In Here </span> </a> </h2>
+<h2> <a href="./sign-in" id="indexLink"> <span class="underline" > Sign In Here </span> </a> </h2>
 
 </div>
 
 <%- include('./includes/footer') %>
+
+<script>
+    //redirect if they are logged in already
+    const loggedIn = getCookie("loggedIn");
+    if(loggedIn){
+        $('#indexLink').find('span').text("View Tasks");
+        $('#indexLink').attr('href', './tasks');
+    }
+
+</script>
 
