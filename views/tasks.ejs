@@ -12,25 +12,39 @@
                 <%= title %>
             </h1>
 
-            <form id="taskForm" method="post">
+            <form id="taskForm" method="post" class="Forms">
+
+                <div class="task_input">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required><br>
+                </div>
 
+                <div class="task_input">
                 <label for="description">Description:</label>
                 <textarea id="description" name="description"></textarea><br>
+                </div>
 
+                <div class="task_input">
                 <label for="category">Category:</label>
                 <input type="text" id="category" name="category"><br>
+                </div>
 
+                <div class="task_input">
                 <label for="label">Label:</label>
                 <input type="text" id="label" name="label"><br>
+                </div>
 
+                <div class="task_input">
                 <label for="dueDate">Due Date:</label>
                 <input type="date" id="dueDate" name="dueDate"><br>
+                </div>
 
+                <div class="task_input">
                 <label for="priority">Priority Level: </label>
                 <input type="number" id="priority" min="0" max="3" value="0"><br>
+                </div>
 
+                <div class="task_input">
                 <label for="status">Status: </label>
                 <select name="status" id="status">
                     <option value="Not started">Not started</option>
@@ -39,10 +53,14 @@
 
                 </select>
 
+                </div>
+
                 <input type="hidden" id="owner" name="owner" value="" readonly><br><br>
 
-                <input type="submit" value="Create Task">
+                <input type="submit" value="Create Task" class="createTask">
             </form>
+
+            <p id="tasksImage"><img src="/images/image5.png" alt="Checking tasks off on a paper list"></p>
             <div id="messages"> </div>
 
             <label for="sortTasks">Sort by:</label>
@@ -71,24 +89,33 @@
                         </p>
                         <p class="task-status">Status: <%= task.status %>
                         </p>
+
                         <button id="<%=task._id %>" class="deleteButton">Delete</button>
                         <button class="updateButton">Update</button>
+
                         <form class="updateForm" style="display: none;">
+
                             <label for="updateName">Name:</label>
                             <input type="text" id="updateName" name="updateName" value="<%= task.name %>" required><br>
+
                             <label for="updateDescription">Description:</label>
                             <textarea id="updateDescription"
                                 name="updateDescription"><%= task.description %></textarea><br>
+
                             <label for="updateCategory">Category:</label>
                             <input type="text" id="updateCategory" name="updateCategory"
                                 value="<%= task.category %>"><br>
+
                             <label for="updateLabel">Label:</label>
                             <input type="text" id="updateLabel" name="updateLabel" value="<%= task.label %>"><br>
+
                             <label for="updateDueDate">Due Date:</label>
                             <input type="date" id="updateDueDate" name="updateDueDate" value="<%= task.dueDate %>"><br>
+
                             <label for="updatePriority">Priority Level: </label>
                             <input type="number" id="updatePriority" name="updatePriority" min="0" max="3"
                                 value="<%= task.priority %>"><br>
+                                
                             <label for="status">Status: </label>
                             <select name="status" id="status">
                                 <option value="Not started">Not started</option>

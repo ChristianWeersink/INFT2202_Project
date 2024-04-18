@@ -14,24 +14,106 @@ body {
     background-color: #EAEBED;
     flex: 1;
 }
-
+ /* Centering */
 .centertext {
     text-align: center;
 }
 
-.spButton {
-    margin-left: -185px;
+.centerbottom {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 100px;
+    width: 100%;
 }
 
+.spButton {
+    margin-bottom: 40px;
+    margin-left: -150px;
+    margin-top: -10px;
+}
+
+/* Forms CSS */
 .Forms {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
+
+/* For sign up and sign in pages */
+.input_items input, .input_items textarea, .input_items select {
+    width: 140px;
+    margin-bottom: 10px;
+}
+
+.input_items label {
+    width: 130px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.input_items {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#conf_id {
+    margin-top: -10px;
+}
+
+/* For Task page */
+.task_input input, .task_input textarea, .task_input select {
+    width: 140px;
+    margin-bottom: 10px;
+}
+
+.task_input label {
+    width: 95px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.task_input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.createTask {
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+
+/* Task update forms */
+.updateForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.updateForm label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.updateForm input, .updateForm textarea, .updateForm select {
+    width: 140px;
+    margin-bottom: 2px;
+}
+
+.updateForm button {
+    margin-top: 10px;
+}
+
+
 
 .bold {
     font-weight: bolder;
 }
 
+/* Nav bar */
 .navigation {
     height: 50px;
     text-decoration: none;
@@ -51,6 +133,7 @@ body {
     margin-right: 10px;
 }
 
+/* Links */
 a {
 	text-decoration: none;
 	font-weight: bold;
@@ -68,7 +151,7 @@ a:hover .underline {
 }
 
 
-/* For index.ejs carousel */
+/* For index.ejs carousel and images */
 .Images {
     opacity: 1;
     overflow: hidden;
@@ -80,11 +163,27 @@ a:hover .underline {
     height: auto;
 }
 
-
 #carouselImage {
     height: 300px;
 }
 
+#dashboardImage img {
+    height: 25%;
+    width: 25%;
+    margin-left: -1000px;
+}
+
+#tasksImage {
+    position: relative;
+}
+
+#tasksImage img {
+    position: absolute;
+    height: 200px;
+    width: auto;
+    margin-left: 350px;
+    margin-top: -350px;
+}
 
 /* Message styling */
 .error {
