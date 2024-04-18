@@ -116,8 +116,9 @@ const updateTaskById = async (req, res) => {
         console.log(req.body);
         // Retrieve the task by ID from the database and update its fields
         if(!req.body.dueDate){
-            req.body.dueDate = "No date";
+            req.body.dueDate = new Date("2024-04-15");
         }
+        console.log(req.body.dueDate);
         
         const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
         console.log(updatedTask);

@@ -82,6 +82,7 @@ app.use('/scripts', (req, res, next) => {
 }, express.static(path.join(__dirname, 'views/scripts')));
 
 
+
 app.get('/sign-up', (req, res) => {
         res.render('sign-up');
 });
@@ -147,17 +148,17 @@ app.post('/tasks', async (req, res) => {
 // Footer routes
 
 // About Us route
-app.get('/information/aboutus', (req, res) => {
+app.get('/aboutus', (req, res) => {
         res.render('aboutus');
 });
 
 // Cookie Policy route
-app.get('/information/cookies', (req, res) => {
+app.get('/cookies', (req, res) => {
         res.render('cookies');
 });
 
 // Privacy Policy route
-app.get('/information/privacy', (req, res) => {
+app.get('/privacy', (req, res) => {
         res.render('privacy');
 });
 
