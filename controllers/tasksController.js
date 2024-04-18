@@ -48,7 +48,7 @@ const getAllTasks = async (req, res) => {
 
         // Pagination parameters
         const page = parseInt(req.query.page) || 1; // Default page is 1
-        const pageSize = 10; // Number of tasks per page
+        const pageSize = 12; // Number of tasks per page
 
         // Calculate skip value
         const skip = (page - 1) * pageSize;

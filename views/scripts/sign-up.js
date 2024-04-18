@@ -59,7 +59,7 @@ document.getElementById("sign-up").addEventListener("submit", async function (ev
         formMessage.innerHTML = message;
         formMessage.classList.add('error');
     }
-    else {
+    else { // information is valid
         try {
             const res = await fetch("/sign-up", {
                 method: "POST",

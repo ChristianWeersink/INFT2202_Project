@@ -3,6 +3,8 @@ let userInfo = getCookie('user');
 let userParsed = JSON.parse(userInfo);
 $('#owner').val(userParsed._id);
 
+
+//// CREATE NEW TASK
 $('#taskForm').submit(function (event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -28,7 +30,6 @@ $('#taskForm').submit(function (event) {
         success: async function (response) {
             try {
                 updateTasks($('#sortTasks').val(), getCurrentPageNumber());
-
 
                 // Clear the form input fields
                 $('#name').val('');
@@ -61,7 +62,7 @@ $('#taskForm').submit(function (event) {
 
 
 
-// Update Function
+// UPDATE TASK
 $(document).ready(function () {
     // Update button click event
     $('#tasks-container').on('click', '.updateButton', function () {
@@ -181,7 +182,10 @@ $(document).ready(function () {
         taskItem.find('.updateForm').hide();
     });
 
-    // Delete button click event
+
+
+
+    // DELETE TASK
     $('#tasks-container').on('click', '.deleteButton', function () {
         const taskId = $(this).attr('id');
         const taskItem = $(this).closest('.task-item'); // Retrieve taskItem here
@@ -221,7 +225,7 @@ $(document).ready(function () {
 });
 
 
-
+// Pagination
 $(document).ready(function () {
     // Handle pagination link click event
     $('.pagination').on('click', '.pagination-link', function (e) {
@@ -236,7 +240,7 @@ $(document).ready(function () {
 
 
 
-
+// SORTING
 $(document).ready(function () {
 
     // Handle sorting option change
@@ -250,6 +254,8 @@ $(document).ready(function () {
 
 });
 
+
+// REFRESH TASKS WITH SORTING AND PAGE
 function updateTasks(sortBy, page) {
     $.ajax({
         type: 'GET',
@@ -268,7 +274,7 @@ function updateTasks(sortBy, page) {
 
 
 
-
+// REFRESH TASKS
 function renderTasks(tasks, currentPage) {
     $('#tasks-container').html('');
     tasks.forEach(task => {
@@ -324,12 +330,15 @@ function renderTasks(tasks, currentPage) {
         $('.pagination').append(`<a class='pagination-link' href="/tasks?page=${currentPage - 1}" data-page="${currentPage - 1}">Previous </a>`);
     }
     $('.pagination').append(`<span>Page ${currentPage}</span>`);
-    if (tasks.length >= 10) {
+    
+    if (tasks.length >= 12) {
         $('.pagination').append(`<a class='pagination-link' href="/tasks?page=${currentPage + 1}" data-page="${currentPage + 1}"> Next</a>`);
     }
 
 }
 
+
+// GET PAGE NUMBER FROM FORM -- not working
 function getCurrentPageNumber() {
     // Find the link with the 'active-page' class within the pagination container
     const currentPageLink = $('.pagination-link.active-page');
