@@ -36,4 +36,28 @@
 
 
 
-    <%- include('./includes/footer') %>
+    <footer>
+
+        <div id="task-footer">
+            <hr>
+            <p> &copy; <span id="currentYear"></span> Christian Weersink and Christina Jackson </p>
+
+            <p> <a href="../aboutus"> <span class="underline">About Us </span>
+                    &nbsp; </a> <a href="../cookies">| &nbsp; <span
+                        class="underline">Cookie Policy </span> &nbsp;</a> <a href="../privacy"
+                    >| &nbsp; <span class="underline">Privacy Policy </span></a> </p>
+        </div>
+        <script>
+
+            var currentYear = new Date().getFullYear();
+
+            document.getElementById('currentYear').textContent = currentYear;
+        </script>
+
+
+
+
+    </footer>
+    </body>
+
+    </html>

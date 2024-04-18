@@ -269,7 +269,7 @@ a:hover .underline {
     margin-top: auto;
 	padding: 10px;
     text-align: center;
-    position:fixed;
+    position:absolute;
     bottom: 0;
     width: 100%;
     z-index: 50;
