@@ -87,16 +87,16 @@ app.get('/sign-up', (req, res) => {
         res.render('sign-up');
 });
 
-app.post('/sign-up', (req, res) => {
-        try{
-                registerUser(req, res);
+app.post('/sign-up', async (req, res) => {
+        try {
+            await registerUser(req, res);
+            res.status(201).json({ success: true });
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({ success: false, message: error.message });
         }
-        catch (error){
-                console.log(error);
-                res.status(500).json({message: error.message});
-        }
-        
-})
+    });
+    
 
 
 

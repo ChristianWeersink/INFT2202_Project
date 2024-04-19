@@ -72,8 +72,7 @@
         
         <script>
             //redirect if they are logged in already
-            const loggedIn = getCookie("loggedIn");
-            if(loggedIn){
+            if(getCookie("loggedIn")){
                 window.location.href = "/dashboard";
             }
 

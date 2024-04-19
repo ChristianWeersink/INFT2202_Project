@@ -267,20 +267,18 @@ a:hover .underline {
 /* Footer CSS */
 #footer {
     margin-top: auto;
-	padding: 10px;
+	padding: 10px 0px;
     text-align: center;
     position:absolute;
     bottom: 0;
     width: 100%;
-    z-index: 50;
 }
 
 #task-footer {
     margin-top: auto;
-	padding: 10px;
+	padding: 10px 0px;
     text-align: center;
     position:sticky;
     bottom: 0;
     width: 100%;
-    z-index: 50;
 }

@@ -52,7 +52,6 @@
     }
 
     setInterval(nextPic, 3000);
-    setInterval(nextImage, 3000);
 
 </script>
 
@@ -66,9 +65,8 @@
 <%- include('./includes/footer') %>
 
 <script>
-    //redirect if they are logged in already
-    const loggedIn = getCookie("loggedIn");
-    if(loggedIn){
+    // Change displayed links based on signed in status
+    if(getCookie("loggedIn")){
         $('#indexLink').find('span').text("View Tasks");
         $('#indexLink').attr('href', './tasks');
     }
