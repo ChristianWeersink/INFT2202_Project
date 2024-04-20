@@ -1,3 +1,9 @@
+/* 
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Tasks javascript logic 
+*/
 // Access userInfo and set the owner field
 let userInfo = getCookie('user');
 let userParsed = JSON.parse(userInfo);
@@ -47,13 +53,11 @@ $('#taskForm').submit(function (event) {
 
             } catch (error) {
                 console.error('Error:', error);
-                // Handle error here
                 $("#messages").text("Error: an error occurred when creating a task.").addClass('error');
             }
         },
         error: function (xhr, status, error) {
             console.error('Error:', error);
-            // Handle error here
             $("#messages").text("Error: ", error).addClass('error');
         }
     });
@@ -129,7 +133,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(updatedData),
             success: function (response) {
-                // Update task data in the DOM
+                // Update task data on the page
                 console.log(response);
                 taskItem.find('.task-name').text(response.name);
                 taskItem.find('.task-description').text("Description: " + response.description);
@@ -156,7 +160,6 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);
-                // Handle error here
                 $("#messages").text("Error: " + error).addClass('error');
             }
         });
@@ -199,14 +202,13 @@ $(document).ready(function () {
                 type: 'DELETE',
                 url: '/tasks/' + taskId,
                 success: function (response) {
-                    // Remove the task item from the DOM
+                    // Remove the task from the page
                     updateTasks($('#sortTasks').val(), getCurrentPageNumber());
                     console.log('Task deleted successfully');
                     $('#messages').text("Task deleted successfully!").addClass('success');
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
-                    // Handle error here
                     $("#messages").text("Error: " + error).addClass('error');
                 }
             });
@@ -248,8 +250,6 @@ $(document).ready(function () {
         const sortBy = $(this).val();
         updateTasks(sortBy, 1);
     });
-
-    // Call updateTasks initially with default sorting
     updateTasks('name', 1); // Default sorting by name
 
 });
@@ -276,10 +276,11 @@ function updateTasks(sortBy, page) {
 
 // REFRESH TASKS
 function renderTasks(tasks, currentPage) {
-    $('#tasks-container').html('');
+    $('#tasks-container').html(''); // clears the tasks from the page
     tasks.forEach(task => {
         const formattedDate = new Date(task.dueDate).toISOString();
         const dueDate = new Date(formattedDate).toLocaleDateString('en-CA', { timeZone: 'UTC' }); //format date
+        // for each task, add the data and the update form to the task container
         $('#tasks-container').append(`
 <div class="task-item" data-task-id="${task._id}">
     <h3 class='task-name'>${task.name}</h3>
@@ -324,7 +325,7 @@ function renderTasks(tasks, currentPage) {
 </div>
 `);
     });
-
+    // update pagination controls
     $('.pagination').html('');
     if (currentPage > 1) {
         $('.pagination').append(`<a class='pagination-link' href="/tasks?page=${currentPage - 1}" data-page="${currentPage - 1}">Previous </a>`);
@@ -338,7 +339,7 @@ function renderTasks(tasks, currentPage) {
 }
 
 
-// GET PAGE NUMBER FROM FORM -- not working
+// GET PAGE NUMBER FROM FORM
 function getCurrentPageNumber() {
     // Find the link with the 'active-page' class within the pagination container
     const currentPageLink = $('.pagination-link.active-page');

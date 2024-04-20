@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Task controller for task routes
+*/
 const asyncHandler = require("express-async-handler");
 // @desc Get all students
 // @route GET /api/students

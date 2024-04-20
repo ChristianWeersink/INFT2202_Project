@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    User controller for each route
+*/
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
@@ -42,9 +48,6 @@ const registerUser = asyncHandler(async(req, res) =>{
     
 }) ;
 
-// const registerUser = asyncHandler(async(req, res) =>{
-//     res.json({message: "Register the user"}); // just for testing route
-// }) ;
 
 
 
@@ -82,9 +85,6 @@ const loginUser = asyncHandler(async(req, res) =>{
     }
 }) ;
 
-// const loginUser = asyncHandler(async(req, res) =>{
-//     res.json({message: "Login the user"});
-// }) ;
 
 
 //@desc Show current user

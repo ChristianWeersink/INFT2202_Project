@@ -1,3 +1,11 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Sign up javascript logic
+*/
+
+// Start listening after page is loaded
 document.addEventListener("DOMContentLoaded", function() {
     const newPassword = document.getElementById("su_password");
     const confirmPass = document.getElementById('su_confirm_password');
@@ -31,6 +39,7 @@ document.getElementById("sign-up").addEventListener("submit", async function (ev
     let isValid = true;
     let message = "";
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Form validation
     if (!emailRegex.test(email)) {
         isValid = false;
         message += "Email must be a valid format.<br>";

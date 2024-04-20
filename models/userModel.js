@@ -1,3 +1,10 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    User structure
+*/
+
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 

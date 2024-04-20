@@ -1,3 +1,11 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Server.js where all of the routes are routed
+*/
+
+//Imports 
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -29,13 +37,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cookieParser());
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/public/images', express.static('images'));
+// use image files
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// Serve javascript files
+app.use('/scripts', (req, res, next) => {
+        res.type('application/javascript');
+        next();
+}, express.static(path.join(__dirname, 'views/scripts')));
+
 // Routes
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
@@ -56,10 +70,7 @@ app.get('/sign-in', (req, res) => {
 });
 
 app.post("/sign-in", passport.authenticate('local'), (req, res) => {
-        // If passport.authenticate('local') succeeds, this function will be called
-        // This means the user has been authenticated successfully
-        
-        // Set user information in cookies
+        // if passport succeeds, redirect and set cookies
         const authenticatedUser = req.user;
         res.cookie('user', JSON.stringify(authenticatedUser));
         res.cookie('success', true);
@@ -74,14 +85,10 @@ app.get('/dashboard', (req, res) => {
         res.render('dashboard');
 });
 
-// Serve JavaScript files
-app.use('/scripts', (req, res, next) => {
-        res.type('application/javascript');
-        next();
-}, express.static(path.join(__dirname, 'views/scripts')));
 
 
 
+// Sign up routes
 app.get('/sign-up', (req, res) => {
         res.render('sign-up');
 });
@@ -98,14 +105,12 @@ app.post('/sign-up', async (req, res) => {
     
 
 
-
-// Corrected 'res.render()' statement for logout route
+// Logout route
 app.get('/logout', (req, res) => {
         res.render('logout');
 });
 
-// Tasks route
-
+// Tasks routes
 app.delete('/tasks/:id', async (req, res) => {
         try {
                 await deleteTaskById(req, res);

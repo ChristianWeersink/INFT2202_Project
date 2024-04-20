@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    JWT token handler
+*/
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 

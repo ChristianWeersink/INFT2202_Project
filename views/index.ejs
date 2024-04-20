@@ -1,3 +1,10 @@
+<!-- 
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Index homepage
+ -->
+
 <% const title = "Home"; %>
 <%- include('./includes/header', {title: title}) %>
 
@@ -33,6 +40,7 @@
     const carouselImages = carouselDiv.querySelectorAll(".Images");
     let index = 0;
 
+    // Show one image at a time
     function thePictures(index) {
         carouselImages.forEach((image, i) => {
             if (i === index) {
@@ -46,11 +54,13 @@
 
     thePictures(index);
 
+    // Next image
     function nextPic(){
         index = (index + 1) % carouselImages.length;
         thePictures(index);
     }
 
+    // Image shows for 3 seconds
     setInterval(nextPic, 3000);
 
 </script>

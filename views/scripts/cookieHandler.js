@@ -1,4 +1,9 @@
-
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Cookie Handler function
+*/
 
 // cookieHandler.js
 

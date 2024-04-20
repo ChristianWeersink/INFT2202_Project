@@ -1,3 +1,10 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Error handler
+*/
+
 const errorHandler = (error, req, res, next) => {
 const constants = require('../constants');    
 const statusCode = res.statusCode ? res.statusCode : 500;

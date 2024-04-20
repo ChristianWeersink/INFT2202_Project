@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    User routes
+*/
 const express = require("express");
 const { registerUser, loginUser, currentUser } = require("../controllers/userController");
 const router = express.Router();

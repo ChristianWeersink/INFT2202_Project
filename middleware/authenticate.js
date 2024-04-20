@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Passport authentication
+*/
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/userModel');

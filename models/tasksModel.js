@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Task structure
+*/
 const mongoose = require("mongoose");
 
 const taskSchema = mongoose.Schema({

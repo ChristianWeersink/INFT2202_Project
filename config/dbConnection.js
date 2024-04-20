@@ -1,3 +1,9 @@
+/*
+    Final project
+    Christina Jackson and Christian Weersink
+    INFT 2202-07
+    Database Connection
+*/
 const mongoose = require("mongoose");
 const connectDb = async () => {
     try {
